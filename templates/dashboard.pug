@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title Chat Application
+  body
+    h1 Chat Application
+    h2 Welcome, #{name}
+    
+
+    h2 Chat List
+    ul
+    each chat in chats
+      a(href=`/chats/${chat}`) #{chat}
+      br 
+    form(action="/createchats" method="post")
+      div
+        label(for="chatname") Name:
+        input(type="text" name="chatname" required)
+      div
+        label(for="password") Password:
+        input(type="text" name="password" required)
+      div
+        button(type="submit") Submit
+    p(id="responsedata")
