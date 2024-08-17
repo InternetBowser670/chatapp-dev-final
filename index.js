@@ -32,7 +32,7 @@ const chats = client.db("dev").collection("chats");
 
 const app = express();
 const server = http.createServer(app);
-const wsPort = 8080;
+const wsPort = 443;
 
 app.use(cookieParser());
 app.use("/static", express.static("static"));
@@ -441,5 +441,5 @@ wsServer.on('connection', (socket) => {
 
 // Start the server on port 8080
 server.listen(8080, () => {
-    console.log('WS Server is listening on http://localhost:8080');
+    console.log('WS Server is listening on http://localhost:443');
 });
