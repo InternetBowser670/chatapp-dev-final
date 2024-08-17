@@ -198,7 +198,7 @@ if (messages.length > 0) {   // Check if there are messages in the array
           <input type="submit" name="submit">
         </form>
         <script>
-          const ws = new WebSocket('ws://localhost:${wsPort}');
+          const ws = new WebSocket('ws://chatapp-dev.azurewebsites.net:${wsPort}');
           const messagesDiv = document.getElementById('messages');
           const messageForm = document.getElementById('messageForm');
           const messageInput = document.getElementById('messageInput');
