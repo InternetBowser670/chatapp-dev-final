@@ -415,7 +415,6 @@ function generateSessionId(username) {
   return uuid;
 }
 
-app.listen(3000, () => console.log("Server started on port 3000"));
 
 // Create a WebSocket server
 const wsServer = new WebSocket.Server({ server });
@@ -443,4 +442,9 @@ wsServer.on('connection', (socket) => {
 // Start the server on port 8080
 server.listen(443, () => {
     console.log('WS Server is listening on http://<azure>:443');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
 });
