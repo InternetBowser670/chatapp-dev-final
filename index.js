@@ -444,7 +444,7 @@ server.listen(443, () => {
     console.log('WS Server is listening on http://<azure>:443');
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
