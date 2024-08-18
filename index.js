@@ -52,6 +52,7 @@ const homepage = fs.readFileSync("pages/homepage.html", "utf8");
 const dashboard = pug.compileFile("./templates/dashboard.pug");
 
 app.get("/", (req, res) => {
+  console.log("user conected (root)")
   res.end(homepage);
 });
 
@@ -441,5 +442,5 @@ wsServer.on('connection', (socket) => {
 
 // Start the server on port 8080
 server.listen(443, () => {
-    console.log('WS Server is listening on http://localhost:443');
+    console.log('WS Server is listening on http://<azure>:443');
 });
