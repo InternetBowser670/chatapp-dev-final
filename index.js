@@ -199,35 +199,29 @@ if (messages.length > 0) {   // Check if there are messages in the array
           <input type="submit" name="submit">
         </form>
         <script>
-          const ws = new WebSocket('wss://chatapp-dev.azurewebsites.net:${wsPort}');
-          const messagesDiv = document.getElementById('messages');
-          const messageForm = document.getElementById('messageForm');
-          const messageInput = document.getElementById('messageInput');
-          const chatname = "${chatname}";
-          const username = "${authData.user}"
+          const ws = new WebSocket(\`wss://localhost:${wsPort}\`);
+const messagesDiv = document.getElementById('messages');
+const messageForm = document.getElementById('messageForm');
+const messageInput = document.getElementById('messageInput');
+const chatname = "${chatname}";
+const username = "${authData.user}";
 
-          ws.onmessage = event => {
+ws.onmessage = event => {
     let data;
 
-    // Check if the data is a string
     if (typeof event.data === 'string') {
         data = event.data;
-    }
-    // Check if the data is a Blob
-    else if (event.data instanceof Blob) {
+    } else if (event.data instanceof Blob) {
         const reader = new FileReader();
         reader.onload = () => {
             data = reader.result;
             processMessage(data);
         };
         reader.readAsText(event.data);
-        return; // Exit the function while waiting for the Blob to be read
-    }
-    // Check if the data is an ArrayBuffer
-    else if (event.data instanceof ArrayBuffer) {
+        return;
+    } else if (event.data instanceof ArrayBuffer) {
         data = new TextDecoder().decode(event.data);
-    }
-    else {
+    } else {
         console.error('Unsupported WebSocket message type:', event.data);
         return;
     }
@@ -235,17 +229,15 @@ if (messages.length > 0) {   // Check if there are messages in the array
     processMessage(data);
 };
 
-// Function to process and display the message
 function processMessage(data) {
     try {
         const parsedData = JSON.parse(data);
         const { chatname: incomingChatname, username: incomingUsername, content } = parsedData;
-        console.log("pd", parsedData)
-        // Ensure that the necessary fields are present
+        
         if (incomingChatname && incomingUsername && content) {
             if (incomingChatname === chatname) {
                 const messageElement = document.createElement('div');
-                messageElement.innerHTML = \`<strong>\${incomingUsername}:</strong> \${content}\`;
+                messageElement.innerHTML = \`<strong>${incomingUsername}:</strong> ${content}\`;
                 messagesDiv.appendChild(messageElement);
             }
         } else {
@@ -255,36 +247,29 @@ function processMessage(data) {
         console.error('Error parsing message data:', error);
     }
 }
-          messageForm.addEventListener('submit', event => {
-            event.preventDefault();
 
-            var formData = new FormData(messageForm);
+messageForm.addEventListener('submit', event => {
+    event.preventDefault();
 
-            fetch("/messages/${chatname}", {
-              method: "POST",
-              body: formData,
-              header: {
-                "Content-Type": "multipart/form-data"
-              }
-            })
-            const message = messageInput.value;
-            if (message && username) {
-              ws.send(JSON.stringify({ chatname, username, content: message }));
-              messageInput.value = '';
-            }
-          });
+    const message = messageInput.value;
+    if (message && username) {
+        ws.send(JSON.stringify({ chatname, username, content: message }));
+        messageInput.value = '';
+    }
+});
 
-          ws.onopen = () => {
-            console.log('WebSocket connection established');
-          };
+ws.onopen = () => {
+    console.log('WebSocket connection established');
+};
 
-          ws.onerror = (error) => {
-            console.error('WebSocket error:', error);
-          };
+ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
+};
 
-          ws.onclose = () => {
-            console.log('WebSocket connection closed');
-          };
+ws.onclose = () => {
+    console.log('WebSocket connection closed');
+};
+
         </script>
       </body>
       </html>
