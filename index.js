@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require("multer");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const cookieParser = require("cookie-parser");
 const pug = require("pug");
