@@ -16,6 +16,10 @@ const { Console } = require("console");
 
 const uri = "mongodb+srv://Josh:Password@chatapp.hvuyebo.mongodb.net/?retryWrites=true&w=majority&appName=chatapp";
 
+const secretKey = crypto.randomBytes(32)
+
+console.log("secretkey is: ", secretKey)
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -26,7 +30,7 @@ const client = new MongoClient(uri, {
 });
 
 client.connect();
-const db = client.db("dev").collection("users");
+const users = client.db("dev").collection("users");
 const sessions = client.db("dev").collection("sessions");
 const chats = client.db("dev").collection("chats");
 
@@ -75,7 +79,7 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  var userQuery = db.findOne({ username: req.body.username });
+  var userQuery = users.findOne({ username: req.body.username });
   userQuery.then((user) => {
     if (!user) {
       res.writeHead(400);
@@ -97,7 +101,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
   try {
-    const userexists = await db.findOne({ username: req.body.username });
+    const userexists = await users.findOne({ username: req.body.username });
     if (userexists) {
       console.log("User already exists");
       res.status(400).json({ message: "User already exists" }); // Send JSON response for error
@@ -116,7 +120,7 @@ app.post("/signup", async (req, res) => {
           chats: []
         };
 
-        await db.insertOne(user);
+        await users.insertOne(user);
         var session = generateSessionId(req.body.username);
         res.cookie("sessionId", session);
         res.status(200).json({ message: "Account created successfully" }); // Send JSON response for success
@@ -138,7 +142,7 @@ app.get("/dashboard", async (req, res) => {
   auth(req, res, async (authData) => {
     try {
       // Get user data
-      var userData = await db.findOne({ username: authData.user });
+      var userData = await users.findOne({ username: authData.user });
 
       // Get chat names from user data
       var chatNames = userData.chats || []; // Default to empty array if no chats are found
@@ -191,6 +195,10 @@ if (messages.length > 0) {   // Check if there are messages in the array
     // Prepare the HTML content
     const defaultContent = `
       <html>
+      <head>
+        <title>Convo: ${chatname}</title>
+        <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+      </head>
       <body>
         <h1>Chat: ${chatname}</h1>
         <div id="messages">${formattedMessages}</div>
@@ -199,7 +207,7 @@ if (messages.length > 0) {   // Check if there are messages in the array
           <input type="submit" name="submit">
         </form>
         <script>
-          const ws = new WebSocket(\`wss://localhost:${wsPort}\`);
+          const ws = new WebSocket(\`ws://localhost:${wsPort}\`);
 const messagesDiv = document.getElementById('messages');
 const messageForm = document.getElementById('messageForm');
 const messageInput = document.getElementById('messageInput');
@@ -237,7 +245,7 @@ function processMessage(data) {
         if (incomingChatname && incomingUsername && content) {
             if (incomingChatname === chatname) {
                 const messageElement = document.createElement('div');
-                messageElement.innerHTML = \`<strong>${incomingUsername}:</strong> ${content}\`;
+                messageElement.innerHTML = \`<strong>\${incomingUsername}:</strong> \${content} <br>\`;
                 messagesDiv.appendChild(messageElement);
             }
         } else {
@@ -250,6 +258,14 @@ function processMessage(data) {
 
 messageForm.addEventListener('submit', event => {
     event.preventDefault();
+    var formData = new FormData(messageForm);
+    fetch("/messages/${chatname}", {
+    method: "POST",
+    body: formData,
+    header: {
+      "Content-Type": "multipart/form-data"
+    }
+  })
 
     const message = messageInput.value;
     if (message && username) {
@@ -295,7 +311,6 @@ app.post("/createchats", async (req, res) => {
           const chatCollection = client.db("dev").collection(chatname);
           const chatData = await chatCollection.findOne({ type: "meta" });
           if (chatData && chatData.password === password) {
-            users = client.db("dev").collection("users")
             const result = await users.updateOne(
               {username: authData.user},
               { $push: { chats: chatname } }
@@ -315,7 +330,7 @@ app.post("/createchats", async (req, res) => {
           await chatCollection.insertOne({ name: chatname, password, type: "meta" });
 
           // Update user's chat list
-          await db.updateOne(
+          await users.updateOne(
             { username: authData.user },
             { $push: { chats: chatname } }
           );
@@ -365,7 +380,7 @@ app.post("/messages/:chatname", (req, res) => {
       content: `<p><strong>${username}:</strong> ${message}</p>`
     });
 
-    wsServer.clients.forEach(client => {
+    wss.clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(formattedMessage);
       }
@@ -377,7 +392,7 @@ app.post("/messages/:chatname", (req, res) => {
 
 app.post("/updateUser", (req, res) => {
   auth(req, res, (authData) => {
-    db.updateOne({ username: authData.user }, {
+    users.updateOne({ username: authData.user }, {
       $set: {
         birthday: {
           month: req.body.month,
@@ -402,21 +417,21 @@ function generateSessionId(username) {
 
 
 // Create a WebSocket server
-const wsServer = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server });
 
-wsServer.on('connection', (socket) => {
+wss.on('connection', (socket) => {
   console.log('New client connected');
 
   socket.on('message', (message) => {
     console.log("!!!")
-      console.log(`Received: ${message}`);
+    console.log(`Received: ${message}`);
 
-      // Broadcast the message to all connected clients
-      wsServer.clients.forEach(client => {
-          if (client.readyState === WebSocket.OPEN) {
-              client.send(message);
-          }
-      });
+    // Broadcast the message to all connected clients
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(message);
+        }
+    });
   });
 
   socket.on('close', () => {
