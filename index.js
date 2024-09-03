@@ -14,9 +14,14 @@ const createWebSocketServer = require('./websocketServer'); // Import WebSocket 
 const WebSocket  = require("ws");
 const { Console } = require("console");
 
+const favicon = toString(path.join(__dirname, '/assets/images/favicon.ico'))
+
 const uri = "mongodb+srv://Josh:Password@chatapp.hvuyebo.mongodb.net/?retryWrites=true&w=majority&appName=chatapp";
 
 const secretKey = crypto.randomBytes(32)
+
+const icon = path.join(__dirname, "/assets/images/favicon.ico")
+
 
 console.log("secretkey is: ", secretKey)
 
@@ -30,6 +35,8 @@ const client = new MongoClient(uri, {
 });
 
 client.connect();
+
+const db = client.db("dev")
 const users = client.db("dev").collection("users");
 const sessions = client.db("dev").collection("sessions");
 const chats = client.db("dev").collection("chats");
@@ -57,6 +64,7 @@ const dashboard = pug.compileFile("./templates/dashboard.pug");
 
 app.get("/", (req, res) => {
   console.log("user conected (root)")
+  res.sendFile(icon)
   res.end(homepage);
 });
 
@@ -66,6 +74,7 @@ app.get("/createacc", (req, res) => {
     res.redirect("/dashboard");
     return;
   } else {
+    res.sendFile(icon)
     res.end(signup);
   }
 });
@@ -75,6 +84,7 @@ app.get("/login", (req, res) => {
     res.redirect("/dashboard");
     return;
   }
+  res.sendFile(icon)
   res.end(login);
 });
 
@@ -82,6 +92,7 @@ app.post("/login", async (req, res) => {
   var userQuery = users.findOne({ username: req.body.username });
   userQuery.then((user) => {
     if (!user) {
+      res.sendFile(icon)
       res.writeHead(400);
       res.end();
       return;
@@ -94,6 +105,7 @@ app.post("/login", async (req, res) => {
       } else {
         res.writeHead(400);
       }
+      res.sendFile(icon)
       res.end();
     });
   });
@@ -134,6 +146,7 @@ app.post("/signup", async (req, res) => {
 
 app.get("/updateBirthday", (req, res) => {
   auth(req, res, (authData) => {
+    res.sendFile(icon)
     res.end(changeBday);
   });
 });
@@ -147,7 +160,6 @@ app.get("/dashboard", async (req, res) => {
       // Get chat names from user data
       var chatNames = userData.chats || []; // Default to empty array if no chats are found
 
-      console.log(chatNames); // Log the chat names
 
       // Render the dashboard with chat names
       var html = dashboard({
@@ -155,7 +167,7 @@ app.get("/dashboard", async (req, res) => {
         birthday: userData.birthday,
         chats: chatNames
       });
-
+      res.sendFile(icon)
       res.end(html);
     } catch (error) {
       console.error("Error loading dashboard:", error);
@@ -177,7 +189,6 @@ app.get("/chats/:chatname", async (req, res) => {
     // Fetch chat messages
     const chatCollection = client.db("dev").collection(chatname);
     const messages = await chatCollection.find({type: "msg"}).toArray();
-    console.log(messages)
     let formattedMessages = "";  // Declare outside the if-else block
 
 if (messages.length > 0) {   // Check if there are messages in the array
@@ -196,8 +207,9 @@ if (messages.length > 0) {   // Check if there are messages in the array
     const defaultContent = `
       <html>
       <head>
+        <link rel="stylesheet" href="/styles/style.css">
         <title>Convo: ${chatname}</title>
-        <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
       </head>
       <body>
         <h1>Chat: ${chatname}</h1>
@@ -245,8 +257,9 @@ function processMessage(data) {
         if (incomingChatname && incomingUsername && content) {
             if (incomingChatname === chatname) {
                 const messageElement = document.createElement('div');
-                messageElement.innerHTML = \`<strong>\${incomingUsername}:</strong> \${content} <br>\`;
+                messageElement.innerHTML = \`<strong>\${incomingUsername}:</strong> \${content} <br> <br>\`;
                 messagesDiv.appendChild(messageElement);
+    
             }
         } else {
             console.error('Incomplete message data:', parsedData);
@@ -355,6 +368,7 @@ app.get("/logout", (req, res) => {
   sessions.deleteOne({ uuid: req.cookies.sessionId });
   res.clearCookie("sessionId");
   res.writeHead(200);
+  res.sendFile(icon)
   res.end("<p>You have logged out</p>");
 });
 
@@ -401,9 +415,18 @@ app.post("/updateUser", (req, res) => {
         }
       }
     });
+    res.sendFile(icon)
     res.end();
   });
 });
+
+
+
+app.get('/favicon.ico', (req, res) => {
+  console.log("favicon")
+  res.sendFile(icon);
+});
+
 
 function generateSessionId(username) {
   var uuid = crypto.randomUUID();
