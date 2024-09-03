@@ -13,8 +13,28 @@ const http = require("http");
 const createWebSocketServer = require("./websocketServer"); // Import WebSocket server
 const WebSocket = require("ws");
 const { Console } = require("console");
-
+const run = process.env.RUN;
 const favicon = toString(path.join(__dirname, "/assets/images/favicon.ico"));
+
+let webURL;
+let wsURL;
+
+if (run == "replit") {
+  webURL =
+    "https://0a6fdb98-b50a-49c7-950a-d0819e477728-00-18ck1q89xklz3.worf.replit.dev:3000/";
+  console.log("Web URL is on Replit");
+  wsURL =
+    "https://0a6fdb98-b50a-49c7-950a-d0819e477728-00-18ck1q89xklz3.worf.replit.dev:8080/";
+} else if (run == "local") {
+  webURL = "http://localhost:3000/";
+  wsURL = "http://localhost:8080/";
+  console.log("Web URL is local");
+} else {
+  console.log(
+    "Error: RUN environment variable not set to 'replit' or 'local'.",
+  );
+  console.error("You sold blud");
+}
 
 const uri =
   "mongodb+srv://Josh:Password@chatapp.hvuyebo.mongodb.net/?retryWrites=true&w=majority&appName=chatapp";
@@ -220,7 +240,7 @@ app.get("/chats/:chatname", async (req, res) => {
           <input type="submit" name="submit">
         </form>
         <script>
-          const ws = new WebSocket(\`ws://localhost:${wsPort}\`);
+          const ws = new WebSocket(\`${wsURL}\`);
 const messagesDiv = document.getElementById('messages');
 const messageForm = document.getElementById('messageForm');
 const messageInput = document.getElementById('messageInput');
@@ -254,13 +274,13 @@ function processMessage(data) {
     try {
         const parsedData = JSON.parse(data);
         const { chatname: incomingChatname, username: incomingUsername, content } = parsedData;
-        
+
         if (incomingChatname && incomingUsername && content) {
             if (incomingChatname === chatname) {
                 const messageElement = document.createElement('div');
                 messageElement.innerHTML = \`<strong>\${incomingUsername}:</strong> \${content} <br> <br>\`;
                 messagesDiv.appendChild(messageElement);
-    
+
             }
         } else {
             console.error('Incomplete message data:', parsedData);
