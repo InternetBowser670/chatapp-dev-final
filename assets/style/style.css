@@ -1,0 +1,4 @@
+.scrollable {
+    height: 80%; /* Fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}

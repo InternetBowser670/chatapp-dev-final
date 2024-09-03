@@ -236,20 +236,26 @@ app.get("/chats/:chatname", async (req, res) => {
       </head>
       <body>
         <h1>Chat: ${chatname}</h1>
-        <div id="messages">${formattedMessages}</div>
+        <div id="messages" class="scrollable">${formattedMessages}</div>
         <form id="messageForm" method="POST" action="/messages/${chatname}">
           <input type="text" id="messageInput" name="message" placeholder="Message">
           <input type="submit" name="submit">
         </form>
         <script>
+        
           const ws = new WebSocket(\`${wsURL}\`);
 const messagesDiv = document.getElementById('messages');
 const messageForm = document.getElementById('messageForm');
 const messageInput = document.getElementById('messageInput');
 const chatname = "${chatname}";
 const username = "${authData.user}";
+function scrollToBottom() {
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+scrollToBottom()
 
 ws.onmessage = event => {
+    scrollToBottom()
     let data;
 
     if (typeof event.data === 'string') {
@@ -270,6 +276,7 @@ ws.onmessage = event => {
     }
 
     processMessage(data);
+    scrollToBottom()
 };
 
 function processMessage(data) {
