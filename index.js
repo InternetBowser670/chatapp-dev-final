@@ -10,14 +10,11 @@ const { auth } = require("./authorize");
 const crypto = require("crypto");
 const fs = require("fs");
 const http = require("http");
-const createWebSocketServer = require("./websocketServer"); // Import WebSocket server
 const WebSocket = require("ws");
-const { Console } = require("console");
 const run = process.env.RUN;
-const favicon = toString(path.join(__dirname, "/assets/images/favicon.ico"));
 const style = toString(path.join(__dirname, "/assets/styles/style.css"));
 
-
+const wsPort = 8080;
 
 let webURL;
 let wsURL;
@@ -27,10 +24,10 @@ if (run == "replit") {
     "https://0a6fdb98-b50a-49c7-950a-d0819e477728-00-18ck1q89xklz3.worf.replit.dev:3000/";
   console.log("Web URL is on Replit");
   wsURL =
-    "https://0a6fdb98-b50a-49c7-950a-d0819e477728-00-18ck1q89xklz3.worf.replit.dev:8080/";
+    `https://0a6fdb98-b50a-49c7-950a-d0819e477728-00-18ck1q89xklz3.worf.replit.dev:${wsPort}/`;
 } else if (run == "local") {
   webURL = "http://localhost:3000/";
-  wsURL = "http://localhost:8080/";
+  wsURL = `http://localhost:${wsPort}/`;
   console.log("Web URL is local");
 } else {
   console.log(
@@ -66,7 +63,7 @@ const chats = client.db("dev").collection("chats");
 
 const app = express();
 const server = http.createServer(app);
-const wsPort = 8080;
+
 
 app.use(cookieParser());
 app.use("/static", express.static("static"));
@@ -344,10 +341,7 @@ app.post("/createchats", async (req, res) => {
         const { chatname, password } = req.body;
 
         // Check if the chat collection already exists
-        const existingChat = await client
-          .db("dev")
-          .listCollections({ name: chatname })
-          .toArray();
+        const existingChat = await client.db("dev").listCollections({ name: chatname }).toArray();
         if (existingChat.length > 0) {
           // Verify password
           const chatCollection = client.db("dev").collection(chatname);
@@ -360,6 +354,7 @@ app.post("/createchats", async (req, res) => {
             console.log(`${result.modifiedCount} document(s) updated.`);
             return res.redirect("/dashboard");
           } else {
+            console.log("chat pass is", password)
             return res
               .status(400)
               .send(
@@ -502,9 +497,9 @@ wss.on("connection", (socket) => {
   });
 });
 
-// Start ws the server on port 8080
-server.listen(8080, () => {
-  console.log("WS Server is listening on port 8080");
+// Start ws the server on wsport
+server.listen(wsPort, () => {
+  console.log(`WS Server is listening on port ${wsPort}`);
 });
 
 const PORT = process.env.PORT || 3000;
