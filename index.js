@@ -15,6 +15,9 @@ const WebSocket = require("ws");
 const { Console } = require("console");
 const run = process.env.RUN;
 const favicon = toString(path.join(__dirname, "/assets/images/favicon.ico"));
+const style = toString(path.join(__dirname, "/assets/styles/style.css"));
+
+
 
 let webURL;
 let wsURL;
