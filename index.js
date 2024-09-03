@@ -12,7 +12,8 @@ const fs = require("fs");
 const http = require("http");
 const WebSocket = require("ws");
 const run = process.argv[2];
-const stylesheet = toString(path.join(__dirname, "/assets/styles/style.css"));
+const stylesheet = (path.join(__dirname, "/assets/style/style.css"));
+
 
 const wsPort = 8080;
 
@@ -229,7 +230,7 @@ app.get("/chats/:chatname", async (req, res) => {
     const defaultContent = `
       <html>
       <head>
-        <link rel="stylesheet" href="/styles/style.css">
+        <link rel="stylesheet" href="/styles/main">
         <title>Convo: ${chatname}</title>
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
       </head>
