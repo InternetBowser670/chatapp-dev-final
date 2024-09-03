@@ -11,13 +11,14 @@ const crypto = require("crypto");
 const fs = require("fs");
 const http = require("http");
 const WebSocket = require("ws");
-const run = process.env.RUN;
+const run = process.argv[2];
 const style = toString(path.join(__dirname, "/assets/styles/style.css"));
 
 const wsPort = 8080;
 
 let webURL;
 let wsURL;
+
 
 if (run == "replit") {
   webURL =
