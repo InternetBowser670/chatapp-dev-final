@@ -12,7 +12,7 @@ const fs = require("fs");
 const http = require("http");
 const WebSocket = require("ws");
 const run = process.argv[2];
-const style = toString(path.join(__dirname, "/assets/styles/style.css"));
+const stylesheet = toString(path.join(__dirname, "/assets/styles/style.css"));
 
 const wsPort = 8080;
 
@@ -459,6 +459,10 @@ app.post("/updateUser", (req, res) => {
     res.end();
   });
 });
+
+app.get("/styles/main", (req, res) => {
+  res.sendFile(stylesheet)
+})
 
 app.get("/favicon.ico", (req, res) => {
   console.log("favicon");
