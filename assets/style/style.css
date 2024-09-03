@@ -1,4 +1,17 @@
 .scrollable {
-    height: 80%; /* Fixed height */
+    height: 70%; /* Fixed height */
     overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #616161; /* Optional: Add a border for visibility */
+    padding: 10px; /* Optional: Add padding */
+    border-radius: 25px;
+    background-color: rgb(67, 164, 255);
+}
+
+#messageForm {
+    height: 10%;
+    width: auto;
+}
+
+html {
+    background-color: rgb(68, 103, 167);
 }
