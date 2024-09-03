@@ -10,20 +10,20 @@ const { auth } = require("./authorize");
 const crypto = require("crypto");
 const fs = require("fs");
 const http = require("http");
-const createWebSocketServer = require('./websocketServer'); // Import WebSocket server
-const WebSocket  = require("ws");
+const createWebSocketServer = require("./websocketServer"); // Import WebSocket server
+const WebSocket = require("ws");
 const { Console } = require("console");
 
-const favicon = toString(path.join(__dirname, '/assets/images/favicon.ico'))
+const favicon = toString(path.join(__dirname, "/assets/images/favicon.ico"));
 
-const uri = "mongodb+srv://Josh:Password@chatapp.hvuyebo.mongodb.net/?retryWrites=true&w=majority&appName=chatapp";
+const uri =
+  "mongodb+srv://Josh:Password@chatapp.hvuyebo.mongodb.net/?retryWrites=true&w=majority&appName=chatapp";
 
-const secretKey = crypto.randomBytes(32)
+const secretKey = crypto.randomBytes(32);
 
-const icon = path.join(__dirname, "/assets/images/favicon.ico")
+const icon = path.join(__dirname, "/assets/images/favicon.ico");
 
-
-console.log("secretkey is: ", secretKey)
+console.log("secretkey is: ", secretKey);
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -31,12 +31,12 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
 
 client.connect();
 
-const db = client.db("dev")
+const db = client.db("dev");
 const users = client.db("dev").collection("users");
 const sessions = client.db("dev").collection("sessions");
 const chats = client.db("dev").collection("chats");
@@ -63,18 +63,18 @@ const homepage = fs.readFileSync("pages/homepage.html", "utf8");
 const dashboard = pug.compileFile("./templates/dashboard.pug");
 
 app.get("/", (req, res) => {
-  console.log("user conected (root)")
-  res.sendFile(icon)
+  console.log("user conected (root)");
+  res.sendFile(icon);
   res.end(homepage);
 });
 
 app.get("/createacc", (req, res) => {
-  console.log("2")
+  console.log("2");
   if (req.cookies.sessionId) {
     res.redirect("/dashboard");
     return;
   } else {
-    res.sendFile(icon)
+    res.sendFile(icon);
     res.end(signup);
   }
 });
@@ -84,7 +84,7 @@ app.get("/login", (req, res) => {
     res.redirect("/dashboard");
     return;
   }
-  res.sendFile(icon)
+  res.sendFile(icon);
   res.end(login);
 });
 
@@ -92,7 +92,7 @@ app.post("/login", async (req, res) => {
   var userQuery = users.findOne({ username: req.body.username });
   userQuery.then((user) => {
     if (!user) {
-      res.sendFile(icon)
+      res.sendFile(icon);
       res.writeHead(400);
       res.end();
       return;
@@ -105,7 +105,7 @@ app.post("/login", async (req, res) => {
       } else {
         res.writeHead(400);
       }
-      res.sendFile(icon)
+      res.sendFile(icon);
       res.end();
     });
   });
@@ -124,12 +124,12 @@ app.post("/signup", async (req, res) => {
           res.status(500).json({ message: "Internal Server Error" });
           return;
         }
-        
+
         var user = {
           username: req.body.username,
           password: hash,
           birthday: req.body.bday,
-          chats: []
+          chats: [],
         };
 
         await users.insertOne(user);
@@ -146,7 +146,7 @@ app.post("/signup", async (req, res) => {
 
 app.get("/updateBirthday", (req, res) => {
   auth(req, res, (authData) => {
-    res.sendFile(icon)
+    res.sendFile(icon);
     res.end(changeBday);
   });
 });
@@ -160,14 +160,13 @@ app.get("/dashboard", async (req, res) => {
       // Get chat names from user data
       var chatNames = userData.chats || []; // Default to empty array if no chats are found
 
-
       // Render the dashboard with chat names
       var html = dashboard({
         name: userData.username,
         birthday: userData.birthday,
-        chats: chatNames
+        chats: chatNames,
       });
-      res.sendFile(icon)
+      res.sendFile(icon);
       res.end(html);
     } catch (error) {
       console.error("Error loading dashboard:", error);
@@ -183,25 +182,27 @@ app.get("/chats/:chatname", async (req, res) => {
   auth(req, res, async (authData) => {
     // Check if the user has access to the requested chat
     if (!authData.chats.includes(chatname)) {
-      return res.status(403).send('Access denied');
+      return res.status(403).send("Access denied");
     }
 
     // Fetch chat messages
     const chatCollection = client.db("dev").collection(chatname);
-    const messages = await chatCollection.find({type: "msg"}).toArray();
-    let formattedMessages = "";  // Declare outside the if-else block
+    const messages = await chatCollection.find({ type: "msg" }).toArray();
+    let formattedMessages = ""; // Declare outside the if-else block
 
-if (messages.length > 0) {   // Check if there are messages in the array
-    formattedMessages = messages.map(msg => {
-        const username = msg.username || "Unknown";
-        const content = msg.content || "No content";
-        return `<p><strong>${username}:</strong> ${content}</p>`;
-    }).join("\n");
-} else {
-    console.log("No messages found");
-    formattedMessages = "";  // Default to an empty string if there are no messages
-}
-    
+    if (messages.length > 0) {
+      // Check if there are messages in the array
+      formattedMessages = messages
+        .map((msg) => {
+          const username = msg.username || "Unknown";
+          const content = msg.content || "No content";
+          return `<p><strong>${username}:</strong> ${content}</p>`;
+        })
+        .join("\n");
+    } else {
+      console.log("No messages found");
+      formattedMessages = ""; // Default to an empty string if there are no messages
+    }
 
     // Prepare the HTML content
     const defaultContent = `
@@ -308,30 +309,35 @@ ws.onclose = () => {
   });
 });
 
-
 app.post("/createchats", async (req, res) => {
-  console.log("e")
+  console.log("e");
   try {
     await auth(req, res, async (authData) => {
-
       try {
         const { chatname, password } = req.body;
 
         // Check if the chat collection already exists
-        const existingChat = await client.db("dev").listCollections({ name: chatname }).toArray();
+        const existingChat = await client
+          .db("dev")
+          .listCollections({ name: chatname })
+          .toArray();
         if (existingChat.length > 0) {
           // Verify password
           const chatCollection = client.db("dev").collection(chatname);
           const chatData = await chatCollection.findOne({ type: "meta" });
           if (chatData && chatData.password === password) {
             const result = await users.updateOne(
-              {username: authData.user},
-              { $push: { chats: chatname } }
-            )
+              { username: authData.user },
+              { $push: { chats: chatname } },
+            );
             console.log(`${result.modifiedCount} document(s) updated.`);
             return res.redirect("/dashboard");
           } else {
-            return res.status(400).send("Invalid password, <a href=\"/dashboard\">Click to go to the dashboard</a>");
+            return res
+              .status(400)
+              .send(
+                'Invalid password, <a href="/dashboard">Click to go to the dashboard</a>',
+              );
           }
         } else {
           // Create the new chat collection
@@ -339,20 +345,28 @@ app.post("/createchats", async (req, res) => {
 
           // Insert chat metadata (including password)
           const chatCollection = client.db("dev").collection(chatname);
-          const chats = client.db("dev").collection("chats")
-          await chatCollection.insertOne({ name: chatname, password, type: "meta" });
+          const chats = client.db("dev").collection("chats");
+          await chatCollection.insertOne({
+            name: chatname,
+            password,
+            type: "meta",
+          });
 
           // Update user's chat list
           await users.updateOne(
             { username: authData.user },
-            { $push: { chats: chatname } }
+            { $push: { chats: chatname } },
           );
           return res.redirect("/dashboard");
         }
       } catch (error) {
         console.error("Error during chat operation:", error);
         if (!res.headersSent) {
-          return res.status(500).send("Internal Server Error, <a href=\"/dashboard\">Click to go to the dashboard</a>");
+          return res
+            .status(500)
+            .send(
+              'Internal Server Error, <a href="/dashboard">Click to go to the dashboard</a>',
+            );
         }
       }
     });
@@ -368,12 +382,12 @@ app.get("/logout", (req, res) => {
   sessions.deleteOne({ uuid: req.cookies.sessionId });
   res.clearCookie("sessionId");
   res.writeHead(200);
-  res.sendFile(icon)
+  res.sendFile(icon);
   res.end("<p>You have logged out</p>");
 });
 
 app.post("/messages/:chatname", (req, res) => {
-  console.log("message recieved")
+  console.log("message recieved");
   auth(req, res, async (authData) => {
     const chatname = req.params.chatname;
     const message = req.body.message;
@@ -381,20 +395,20 @@ app.post("/messages/:chatname", (req, res) => {
 
     const chatCollection = client.db("dev").collection(chatname);
 
-    console.log(chatname, message, username)
+    console.log(chatname, message, username);
 
     await chatCollection.insertOne({
       username,
       content: message,
-      type: "msg"
+      type: "msg",
     });
 
     const formattedMessage = JSON.stringify({
       chatname,
-      content: `<p><strong>${username}:</strong> ${message}</p>`
+      content: `<p><strong>${username}:</strong> ${message}</p>`,
     });
 
-    wss.clients.forEach(client => {
+    wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(formattedMessage);
       }
@@ -406,68 +420,67 @@ app.post("/messages/:chatname", (req, res) => {
 
 app.post("/updateUser", (req, res) => {
   auth(req, res, (authData) => {
-    users.updateOne({ username: authData.user }, {
-      $set: {
-        birthday: {
-          month: req.body.month,
-          day: req.body.day,
-          year: req.body.year
-        }
-      }
-    });
-    res.sendFile(icon)
+    users.updateOne(
+      { username: authData.user },
+      {
+        $set: {
+          birthday: {
+            month: req.body.month,
+            day: req.body.day,
+            year: req.body.year,
+          },
+        },
+      },
+    );
+    res.sendFile(icon);
     res.end();
   });
 });
 
-
-
-app.get('/favicon.ico', (req, res) => {
-  console.log("favicon")
+app.get("/favicon.ico", (req, res) => {
+  console.log("favicon");
   res.sendFile(icon);
 });
-
 
 function generateSessionId(username) {
   var uuid = crypto.randomUUID();
   sessions.insertOne({
     uuid: uuid,
     user: username,
-    role: "user"
+    role: "user",
   });
   return uuid;
 }
 
-
 // Create a WebSocket server
 const wss = new WebSocket.Server({ server });
 
-wss.on('connection', (socket) => {
-  console.log('New client connected');
+wss.on("connection", (socket) => {
+  console.log("New client connected");
 
-  socket.on('message', (message) => {
-    console.log("!!!")
+  socket.on("message", (message) => {
+    console.log("!!!");
     console.log(`Received: ${message}`);
 
     // Broadcast the message to all connected clients
-    wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(message);
-        }
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
     });
   });
 
-  socket.on('close', () => {
-      console.log('Client disconnected');
+  socket.on("close", () => {
+    console.log("Client disconnected");
   });
 });
 
-// Start the server on port 8080
+// Start ws the server on port 8080
 server.listen(8080, () => {
-    console.log('WS Server is listening on http://<azure>:8080');
+  console.log("WS Server is listening on port 8080");
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
+  console.log(`Server started on port ${PORT}`);
 });
