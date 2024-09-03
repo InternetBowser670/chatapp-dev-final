@@ -292,6 +292,9 @@ function processMessage(data) {
 
 messageForm.addEventListener('submit', event => {
     event.preventDefault();
+    if (messageInput.value.trim() !== '') {
+    return
+    }
     var formData = new FormData(messageForm);
     fetch("/messages/${chatname}", {
     method: "POST",
