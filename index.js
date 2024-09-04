@@ -11,22 +11,20 @@ const crypto = require("crypto");
 const fs = require("fs");
 const http = require("http");
 const WebSocket = require("ws");
+const { error } = require("console");
 const run = process.argv[2];
-const stylesheet = (path.join(__dirname, "/assets/style/style.css"));
-
+const stylesheet = path.join(__dirname, "/assets/style/style.css");
 
 const wsPort = 8080;
 
 let webURL;
 let wsURL;
 
-
 if (run == "replit") {
   webURL =
     "https://0a6fdb98-b50a-49c7-950a-d0819e477728-00-18ck1q89xklz3.worf.replit.dev:3000/";
   console.log("Web URL is on Replit");
-  wsURL =
-    `https://0a6fdb98-b50a-49c7-950a-d0819e477728-00-18ck1q89xklz3.worf.replit.dev:${wsPort}/`;
+  wsURL = `https://0a6fdb98-b50a-49c7-950a-d0819e477728-00-18ck1q89xklz3.worf.replit.dev:${wsPort}/`;
 } else if (run == "local") {
   webURL = "http://localhost:3000/";
   wsURL = `http://localhost:${wsPort}/`;
@@ -35,7 +33,7 @@ if (run == "replit") {
   console.log(
     "Error: RUN environment variable not set to 'replit' or 'local'.",
   );
-  console.error("You sold blud");
+  throw new "Run not set to 'replit' or 'local'. in the cli args."();
 }
 
 const uri =
@@ -65,7 +63,6 @@ const chats = client.db("dev").collection("chats");
 
 const app = express();
 const server = http.createServer(app);
-
 
 app.use(cookieParser());
 app.use("/static", express.static("static"));
@@ -352,7 +349,10 @@ app.post("/createchats", async (req, res) => {
         const { chatname, password } = req.body;
 
         // Check if the chat collection already exists
-        const existingChat = await client.db("dev").listCollections({ name: chatname }).toArray();
+        const existingChat = await client
+          .db("dev")
+          .listCollections({ name: chatname })
+          .toArray();
         if (existingChat.length > 0) {
           // Verify password
           const chatCollection = client.db("dev").collection(chatname);
@@ -365,7 +365,7 @@ app.post("/createchats", async (req, res) => {
             console.log(`${result.modifiedCount} document(s) updated.`);
             return res.redirect("/dashboard");
           } else {
-            console.log("chat pass is", password)
+            console.log("chat pass is", password);
             return res
               .status(400)
               .send(
@@ -420,14 +420,12 @@ app.get("/logout", (req, res) => {
 });
 
 app.post("/messages/:chatname", (req, res) => {
-
   auth(req, res, async (authData) => {
     const chatname = req.params.chatname;
     const message = req.body.message;
     const username = authData.user;
 
     const chatCollection = client.db("dev").collection(chatname);
-
 
     await chatCollection.insertOne({
       username,
@@ -470,8 +468,8 @@ app.post("/updateUser", (req, res) => {
 });
 
 app.get("/styles/main", (req, res) => {
-  res.sendFile(stylesheet)
-})
+  res.sendFile(stylesheet);
+});
 
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(icon);
@@ -494,7 +492,6 @@ wss.on("connection", (socket) => {
   console.log("New client connected");
 
   socket.on("message", (message) => {
-
     // Broadcast the message to all connected clients
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
