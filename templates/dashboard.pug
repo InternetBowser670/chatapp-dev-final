@@ -3,7 +3,7 @@ html
   head
     title Chat Application
     link(rel='icon', href='/favicon.ico', type='image/x-icon')
-    link(rel="style", href="/styles/main")
+    link(rel="stylesheet", href="/styles/main")
   body
     h1 Chat Application
     h2 Welcome, #{name}
@@ -12,8 +12,9 @@ html
     h2 Chat List
     ul
     each chat in chats
-      a(href=`/chats/${chat}`) #{chat}
-      br 
+      li
+        a(href=`/chats/${chat}`) #{chat}
+        br 
     form(action="/createchats" method="post")
       div
         label(for="chatname") Name:

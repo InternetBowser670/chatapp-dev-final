@@ -235,7 +235,7 @@ app.get("/chats/:chatname", async (req, res) => {
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
       </head>
       <body>
-        <h1>Chat: ${chatname}</h1>
+        <h1>Chat: ${chatname} | <a href="/dashboard">Dashboard</a></h1>
         <div id="messages" class="scrollable">${formattedMessages}</div>
         <br>
         <form id="messageForm" method="POST" action="/messages/${chatname}">
@@ -290,7 +290,8 @@ function processMessage(data) {
                 const messageElement = document.createElement('div');
                 messageElement.innerHTML = \`<strong>\${incomingUsername}:</strong> \${content} <br> <br>\`;
                 messagesDiv.appendChild(messageElement);
-
+                messagesDiv.offsetHeight
+                scrollToBottom()
             }
         } else {
             console.error('Incomplete message data:', parsedData);
