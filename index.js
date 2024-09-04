@@ -365,7 +365,6 @@ app.post("/createchats", async (req, res) => {
             console.log(`${result.modifiedCount} document(s) updated.`);
             return res.redirect("/dashboard");
           } else {
-            console.log("chat pass is", password);
             return res
               .status(400)
               .send(

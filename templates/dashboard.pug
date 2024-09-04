@@ -6,12 +6,12 @@ html
     link(rel="stylesheet", href="/styles/main")
     script(src="/scripts/scroll")
   body
-      
-    h1 Convoes
-    h2 Welcome, #{name}
-    div(class="styleDiv")
+    div(id="dashHeader")
+      h1 Convoes
+      h2 Welcome, #{name}
+    div(id="chatList")
       h2 Chat List
-      ul(id=chatList class=halfWidth)
+      ul
         each chat in chats
           li
             a(href=`/chats/${chat}`) #{chat}
