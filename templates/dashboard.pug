@@ -11,10 +11,10 @@ html
 
     h2 Chat List
     ul
-    each chat in chats
-      li
-        a(href=`/chats/${chat}`) #{chat}
-        br 
+      each chat in chats
+        li
+          a(href=`/chats/${chat}`) #{chat}
+
     form(action="/createchats" method="post")
       div
         label(for="chatname") Name:

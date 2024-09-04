@@ -42,17 +42,28 @@ input[type=text] {
 ::placeholder {
     color: white;
     opacity: 1; /* Firefox */
+}
+  
+::-ms-input-placeholder { /* Edge 12 -18 */
+color: white;
+}
+
+/* stylize bullets */
+
+ul {
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 20px; /* Add padding to position custom bullets */
   }
   
-  ::-ms-input-placeholder { /* Edge 12 -18 */
-    color: white;
+  ul li {
+    position: relative;
+    color: white !important; /* Text color */
   }
-
-  ul {
-    list-style-type: disc;
-    color: white; /* Change the bullet color */
-  }
+  
   
   ul li::marker {
-    color: white; /* Same color for bullet */
+    content: '• '; /* Custom bullet symbol */
+    color: white !important; /* Bullet color */
+    position: absolute;
+    left: -20px; /* Adjust based on padding */
   }

@@ -420,7 +420,7 @@ app.get("/logout", (req, res) => {
 });
 
 app.post("/messages/:chatname", (req, res) => {
-  console.log("message recieved");
+
   auth(req, res, async (authData) => {
     const chatname = req.params.chatname;
     const message = req.body.message;
@@ -428,7 +428,6 @@ app.post("/messages/:chatname", (req, res) => {
 
     const chatCollection = client.db("dev").collection(chatname);
 
-    console.log(chatname, message, username);
 
     await chatCollection.insertOne({
       username,
@@ -475,7 +474,6 @@ app.get("/styles/main", (req, res) => {
 })
 
 app.get("/favicon.ico", (req, res) => {
-  console.log("favicon");
   res.sendFile(icon);
 });
 
@@ -496,8 +494,6 @@ wss.on("connection", (socket) => {
   console.log("New client connected");
 
   socket.on("message", (message) => {
-    console.log("!!!");
-    console.log(`Received: ${message}`);
 
     // Broadcast the message to all connected clients
     wss.clients.forEach((client) => {
