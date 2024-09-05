@@ -467,6 +467,33 @@ app.post("/updateUser", (req, res) => {
   });
 });
 
+app.post("/updateUsername", (req, res) => {
+  auth(req, res, async (authData) => {
+    try {
+      console.log(req.body); // Logging request body
+      console.log(req.body.name); // Logging new username
+      console.log(authData)
+      // Updating the username in the database using UUID as a unique identifier
+      const result = await users.updateOne(
+        { _id: authData._id },
+        { $set: { username: req.body.name } } // Update operation
+      );
+
+      // Check if the document was updated
+      if (result.modifiedCount > 0) {
+        res.sendFile(icon); // Respond with the icon file
+        console.log("w")
+      } else {
+        res.status(400).send("No document was updated");
+        console.log("nah")
+      }
+    } catch (error) {
+      console.error(error); // Log any errors
+      res.status(500).send("Error updating username");
+    }
+  });
+});
+
 app.get("/styles/main", (req, res) => {
   res.sendFile(stylesheet);
 });
@@ -483,7 +510,6 @@ app.get("/changename", (req, res) => {
 
 app.get("/settings", (req, res) => {
   auth(req, res, async (authData) => {
-    res.writeHead(200);
     if (authData.user) {
       res.end(settings)
     }

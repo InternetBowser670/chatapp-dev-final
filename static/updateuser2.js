@@ -5,7 +5,7 @@ form.addEventListener("submit", (e) => {
 
   var formData = new FormData(form);
 
-  fetch("/updateUser", {
+  fetch("/updateUsername", {
     method: "POST",
     body: formData,
     header: {
