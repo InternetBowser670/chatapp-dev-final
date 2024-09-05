@@ -23,12 +23,12 @@
     background-color: rgb(6, 98, 184);
 }
 
-.styleDiv {
+#styleDiv {
     padding: 10px; 
     border-radius: 10px;
     background-color: rgb(6, 98, 184);
     margin: 5px;
-    borrder: 1px solid white !important;;
+    border: 1px solid white !important;;
 }
 
 #messageForm {

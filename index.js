@@ -233,7 +233,7 @@ app.get("/chats/:chatname", async (req, res) => {
       </head>
       <body>
         <h1>Chat: ${chatname} | <a href="/dashboard">Dashboard</a></h1>
-        <div id="messages" class="scrollable">${formattedMessages}</div>
+        <div id="messages" class="scrollable styleDiv">${formattedMessages}</div>
         <br>
         <form id="messageForm" method="POST" action="/messages/${chatname}">
           <input type="text" id="messageInput" name="message" placeholder="Message">
