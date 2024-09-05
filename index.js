@@ -73,6 +73,7 @@ app.use(upload.array());
 app.use(express.json()); // For parsing application/json
 
 const login = fs.readFileSync("pages/login.html", "utf8");
+const updateUsername = fs.readFileSync("pages/changeName.html", "utf8");
 const signup = fs.readFileSync("pages/signup.html", "utf8");
 const blocked = fs.readFileSync("pages/blocked.html", "utf8");
 const changeBday = fs.readFileSync("pages/changeBday.html", "utf8");
@@ -473,6 +474,10 @@ app.get("/styles/main", (req, res) => {
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(icon);
 });
+
+app.get("updateName", (req, res) => {
+  res.end(updateUsername);
+})
 
 function generateSessionId(username) {
   var uuid = crypto.randomUUID();
