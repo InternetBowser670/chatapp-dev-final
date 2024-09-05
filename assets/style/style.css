@@ -63,7 +63,7 @@ flexContainer {
     flex-wrap: wrap;
 }
 
-p, a, h1, h2, h3, div {
+p, a, h1, h2, h3, div, label {
     color: white;
 }
 

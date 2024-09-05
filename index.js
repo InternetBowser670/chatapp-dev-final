@@ -78,12 +78,12 @@ const signup = fs.readFileSync("pages/signup.html", "utf8");
 const blocked = fs.readFileSync("pages/blocked.html", "utf8");
 const changeBday = fs.readFileSync("pages/changeBday.html", "utf8");
 const homepage = fs.readFileSync("pages/homepage.html", "utf8");
+const settings = fs.readFileSync("pages/settings.html", "utf8");
 
 // Compile pug template(s)
 const dashboard = pug.compileFile("./templates/dashboard.pug");
 
 app.get("/", (req, res) => {
-  console.log("user conected (root)");
   res.sendFile(icon);
   res.end(homepage);
 });
@@ -475,9 +475,20 @@ app.get("/favicon.ico", (req, res) => {
   res.sendFile(icon);
 });
 
-app.get("updateName", (req, res) => {
-  res.end(updateUsername);
-})
+app.get("/changename", (req, res) => {
+  auth(req, res, async (authData) => {
+    res.end(updateUsername);
+  })
+});
+
+app.get("/settings", (req, res) => {
+  auth(req, res, async (authData) => {
+    res.writeHead(200);
+    if (authData.user) {
+      res.end(settings)
+    }
+  })
+});
 
 function generateSessionId(username) {
   var uuid = crypto.randomUUID();
