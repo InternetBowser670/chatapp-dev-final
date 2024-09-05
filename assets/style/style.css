@@ -40,6 +40,10 @@
     width: 50%;
 }
 
+.quarterWidth {
+    width: 25%;
+}
+
 .centered {
     margin: auto;
 }
@@ -119,6 +123,5 @@ ul li::marker {
     left: -20px; /* Adjust based on padding */
 }
 #dashHeader {
-    display: flex;
     flex-direction: row;
 }

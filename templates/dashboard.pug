@@ -6,11 +6,10 @@ html
     link(rel="stylesheet", href="/styles/main")
     script(src="/scripts/scroll")
   body
-    div(id="dashHeader" class="styleDiv")
+    div(id="dashHeader" class="styleDiv quarterWidth")
       h1 Convoes
-      br
       h2 Welcome, #{name}
-    div(id="chatList")
+    div(id="chatList halfWidth")
       h2 Chat List
       ul
         each chat in chats
