@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "start": "node index.js local",
+    "startRepl": "node index.js replit"
   },
   "keywords": [],
   "author": "",

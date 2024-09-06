@@ -1,0 +1,27 @@
+name: Deploy to Windows Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to Server
+      run: |
+        ssh -o StrictHostKeyChecking=no Josh@69.216.116.112 << 'EOF'
+          cd C:\Users\Josh\OneDrive\Desktop\Programming\Web\convo-dev\
+          git pull origin main
+          npm install
+          npm start
+        EOF

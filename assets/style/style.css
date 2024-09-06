@@ -40,12 +40,28 @@
     width: 50%;
 }
 
+.halfCentered {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.qtrCentered {
+    width: 25%;
+    margin-left: 37.5%;
+    margin-right: 37.5%;
+}
+
+
 .quarterWidth {
     width: 25%;
 }
 
-.centered {
-    margin: auto;
+.centerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
 }
 
 html {
@@ -86,9 +102,11 @@ button[type="submit"] {
     border-radius: 7px;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=date] {
     border-radius: 7px !important; 
 } 
+
+
 
 ::placeholder {
     color: white;
