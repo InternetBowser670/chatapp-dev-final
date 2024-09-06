@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
     "start": "node index.js local",
-    "startRepl": "node index.js replit"
+    "startRepl": "node index.js replit",
+    "clear": "node db.js delete all"
   },
   "keywords": [],
   "author": "",

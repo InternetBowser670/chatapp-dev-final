@@ -239,7 +239,7 @@ app.get("/chats/:chatname", async (req, res) => {
         <br>
         <form id="messageForm" method="POST" action="/messages/${chatname}">
           <input type="text" id="messageInput" autocomplete="off" readonly 
-onfocus="this.removeAttribute('readonly');" name="password" name="message" placeholder="Message">
+onfocus="this.removeAttribute('readonly');" name="message" name="message" placeholder="Message">
           <input type="submit" name="submit">
         </form>
         <script>
@@ -345,7 +345,6 @@ ws.onclose = () => {
 });
 
 app.post("/createchats", async (req, res) => {
-  console.log("e");
   try {
     await auth(req, res, async (authData) => {
       try {
@@ -426,7 +425,6 @@ app.post("/messages/:chatname", (req, res) => {
     const chatname = req.params.chatname;
     const message = req.body.message;
     const username = authData.user;
-
     const chatCollection = client.db("dev").collection(chatname);
 
     await chatCollection.insertOne({
@@ -474,20 +472,20 @@ app.post("/updateUsername", (req, res) => {
     try {
       console.log(req.body); // Logging request body
       console.log(req.body.name); // Logging new username
-      console.log(authData)
+      console.log(authData);
       // Updating the username in the database using UUID as a unique identifier
       const result = await users.updateOne(
         { _id: authData._id },
-        { $set: { username: req.body.name } } // Update operation
+        { $set: { username: req.body.name } }, // Update operation
       );
 
       // Check if the document was updated
       if (result.modifiedCount > 0) {
         res.sendFile(icon); // Respond with the icon file
-        console.log("w")
+        console.log("w");
       } else {
         res.status(400).send("No document was updated");
-        console.log("nah")
+        console.log("nah");
       }
     } catch (error) {
       console.error(error); // Log any errors
@@ -507,15 +505,15 @@ app.get("/favicon.ico", (req, res) => {
 app.get("/changename", (req, res) => {
   auth(req, res, async (authData) => {
     res.end(updateUsername);
-  })
+  });
 });
 
 app.get("/settings", (req, res) => {
   auth(req, res, async (authData) => {
     if (authData.user) {
-      res.end(settings)
+      res.end(settings);
     }
-  })
+  });
 });
 
 function generateSessionId(username) {
