@@ -1,4 +1,4 @@
-name: Deploy ChatApp
+name: Deploy to Windows Server
 
 on:
   push:
@@ -6,24 +6,22 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build and Deploy
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
-
-      - name: Deploy
-        run: npm run deploy
+    - name: Deploy to Server
+      run: |
+        ssh -o StrictHostKeyChecking=no Josh@69.216.116.112 << 'EOF'
+          cd C:\Users\Josh\OneDrive\Desktop\Programming\Web\convo-dev\
+          git pull origin main
+          npm install
+          npm start
+        EOF
