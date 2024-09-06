@@ -6,8 +6,12 @@
     background-color: rgb(6, 98, 184);
 }
 
+#messageInput {
+    width: 100%;
+}
+
 .styleDiv {
-    padding: 10px;
+    padding: 15px;
     margin: 5px;
     border: 1px solid white !important;
     border-radius: 25px !important;

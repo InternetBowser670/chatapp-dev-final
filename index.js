@@ -119,7 +119,10 @@ app.post("/login", async (req, res) => {
     } else {
       bcrypt.compare(req.body.password, user.password, (err, result) => {
         if (result) {
-          var session = generateSessionId(req.body.username);
+          var session = generateSessionId(
+            req.body.username,
+            userQuery.originalName,
+          );
           res.cookie("sessionId", session);
           res.writeHead(200);
         } else {
@@ -134,7 +137,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
   try {
-    const userexists = await users.findOne({ username: req.body.username });
+    const userexists = await users.findOne({ username: req.body.username }) + await users.findOne({ originalName: req.body.username });
     if (userexists) {
       console.log("User already exists");
       res.status(400).json({ message: "User already exists" }); // Send JSON response for error
@@ -148,13 +151,14 @@ app.post("/signup", async (req, res) => {
 
         var user = {
           username: req.body.username,
+          originalName: req.body.username,
           password: hash,
           birthday: req.body.bday,
           chats: [],
         };
 
         await users.insertOne(user);
-        var session = generateSessionId(req.body.username);
+        var session = generateSessionId(req.body.username, req.body.username);
         res.cookie("sessionId", session);
         res.status(200).json({ message: "Account created successfully" }); // Send JSON response for success
       });
@@ -238,7 +242,7 @@ app.get("/chats/:chatname", async (req, res) => {
         <div id="messages" class="scrollable styleDiv">${formattedMessages}</div>
         <br>
         <form id="messageForm" method="POST" action="/messages/${chatname}">
-          <input type="text" id="messageInput" autocomplete="off" readonly 
+          <input type="text" width=100% id="messageInput" autocomplete="off" readonly 
 onfocus="this.removeAttribute('readonly');" name="message" name="message" placeholder="Message">
           <input type="submit" name="submit">
         </form>
@@ -417,7 +421,7 @@ app.get("/logout", (req, res) => {
   res.clearCookie("sessionId");
   res.writeHead(200);
   res.sendFile(icon);
-  res.end("<p>You have logged out</p>");
+  res.end(homepage);
 });
 
 app.post("/messages/:chatname", (req, res) => {
@@ -516,10 +520,11 @@ app.get("/settings", (req, res) => {
   });
 });
 
-function generateSessionId(username) {
+function generateSessionId(username, originalName) {
   var uuid = crypto.randomUUID();
   sessions.insertOne({
     uuid: uuid,
+    originalName: originalName,
     user: username,
     role: "user",
   });

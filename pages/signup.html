@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Sign Up</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/styles/main" />
   </head>
@@ -29,12 +29,28 @@
         />
         <br />
         <p>Enter your birthday</p>
-        <input type="date" name="bday" placeholder="1" />
+        <input type="date" id=datefield min='1899-01-01' max='2024-9-6' name="bday" placeholder="1" />
         <br />
         <input type="submit" name="submit" value="sign up" />
       </form>
     </div>
+    <script>
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; //January is 0
+      var yyyy = today.getFullYear();
 
+      if (dd < 10) {
+         dd = '0' + dd;
+      }
+
+      if (mm < 10) {
+         mm = '0' + mm;
+      } 
+
+      today = yyyy + '-' + mm + '-' + dd;
+      document.getElementById("datefield").setAttribute("max", today);
+    </script>
     <script src="static/createacc.js"></script>
   </body>
 </html>
