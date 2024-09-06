@@ -6,25 +6,28 @@ html
     link(rel="stylesheet", href="/styles/main")
     script(src="/scripts/scroll")
   body
-    div(id="dashHeader" class="styleDiv quarterWidth")
+    div(id="dashHeader" class="styleDiv halfCentered")
       h1 Convoes
+      hr
       h2 Welcome, #{name}
-    div(id="chatList halfWidth")
-      h2 Chat List
-      ul
-        each chat in chats
-          li
-            a(href=`/chats/${chat}`) #{chat}
-            br
-        
-    
-      form(action="/createchats" method="post")
-        div
-          label(for="chatname") Name:
-          input(type="text" name="chatname" required)
-        div
-          label(for="password") Password:
-          input(type="text" name="password" required)
-        div
-          button(type="submit") Submit
-      p(id="responsedata")
+      div(class="halfCentered lightStyleDiv centerContent")
+        h2 Chat List
+        ul
+          each chat in chats
+            li
+              a(href=`/chats/${chat}`) #{chat}
+              br
+          
+      
+        form(action="/createchats" method="post")
+          div
+            label(for="chatname") Name:
+            input(type="text" name="chatname" autocomplete="off" readonly 
+  onfocus="this.removeAttribute('readonly');" required)
+          div
+            label(for="password") Password:
+            input(type="password" autocomplete="off" readonly 
+  onfocus="this.removeAttribute('readonly');" name="password" required)
+          div
+            button(type="submit") Submit
+        p(id="responsedata")

@@ -116,18 +116,19 @@ app.post("/login", async (req, res) => {
       res.writeHead(400);
       res.end();
       return;
+    } else {
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (result) {
+          var session = generateSessionId(req.body.username);
+          res.cookie("sessionId", session);
+          res.writeHead(200);
+        } else {
+          res.writeHead(403);
+        }
+        res.sendFile(icon);
+        res.end();
+      });
     }
-    bcrypt.compare(req.body.password, user.password, (err, result) => {
-      if (result) {
-        var session = generateSessionId(req.body.username);
-        res.cookie("sessionId", session);
-        res.writeHead(200);
-      } else {
-        res.writeHead(400);
-      }
-      res.sendFile(icon);
-      res.end();
-    });
   });
 });
 
@@ -237,7 +238,8 @@ app.get("/chats/:chatname", async (req, res) => {
         <div id="messages" class="scrollable styleDiv">${formattedMessages}</div>
         <br>
         <form id="messageForm" method="POST" action="/messages/${chatname}">
-          <input type="text" id="messageInput" name="message" placeholder="Message">
+          <input type="text" id="messageInput" autocomplete="off" readonly 
+onfocus="this.removeAttribute('readonly');" name="password" name="message" placeholder="Message">
           <input type="submit" name="submit">
         </form>
         <script>

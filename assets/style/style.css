@@ -26,7 +26,7 @@
 #styleDiv {
     padding: 10px; 
     border-radius: 10px;
-    background-color: rgb(6, 98, 184);
+    background-color: rgb(36, 128, 204) !important;
     margin: 5px;
     border: 1px solid white !important;;
 }
@@ -52,6 +52,13 @@
     margin-right: 37.5%;
 }
 
+.lightStyleDiv {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid white !important;
+    border-radius: 25px !important;
+    background-color: rgb(90, 136, 189) !important;
+}
 
 .quarterWidth {
     width: 25%;
