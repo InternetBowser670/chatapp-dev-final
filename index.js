@@ -42,6 +42,7 @@ const uri =
 const secretKey = crypto.randomBytes(32);
 
 const icon = path.join(__dirname, "/assets/images/favicon.ico");
+const settingsGear = path.join(__dirname, "/assets/images/settings.png");
 
 console.log("secretkey is: ", secretKey);
 
@@ -135,9 +136,15 @@ app.post("/login", async (req, res) => {
   });
 });
 
+app.get("/assets/images/settings.png", (req, res) => {
+  res.sendFile(settingsGear)
+})
+
 app.post("/signup", async (req, res) => {
   try {
-    const userexists = await users.findOne({ username: req.body.username }) + await users.findOne({ originalName: req.body.username });
+    const userexists =
+      (await users.findOne({ username: req.body.username })) +
+      (await users.findOne({ originalName: req.body.username }));
     if (userexists) {
       console.log("User already exists");
       res.status(400).json({ message: "User already exists" }); // Send JSON response for error
@@ -474,12 +481,11 @@ app.post("/updateUser", (req, res) => {
 app.post("/updateUsername", (req, res) => {
   auth(req, res, async (authData) => {
     try {
-      console.log(req.body); // Logging request body
       console.log(req.body.name); // Logging new username
       console.log(authData);
       // Updating the username in the database using UUID as a unique identifier
       const result = await users.updateOne(
-        { _id: authData._id },
+        { originalName: authData.originalName },
         { $set: { username: req.body.name } }, // Update operation
       );
 
@@ -487,6 +493,12 @@ app.post("/updateUsername", (req, res) => {
       if (result.modifiedCount > 0) {
         res.sendFile(icon); // Respond with the icon file
         console.log("w");
+        sessions.deleteOne({ uuid: req.cookies.sessionId });
+        res.clearCookie("sessionId");
+        res.sendFile(icon);
+        var session = generateSessionId(req.body.name, authData.originalName);
+        res.cookie("sessionId", session);
+        res.end(login);
       } else {
         res.status(400).send("No document was updated");
         console.log("nah");

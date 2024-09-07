@@ -82,7 +82,17 @@ html {
     margin: 5px;
 }
 
-flexContainer {
+.inline {
+    display: flex;
+    flex-direction: row;
+}
+
+.spaced {
+    justify-content: space-around;
+    flex-grow: 1;
+}
+
+.flexContainer {
     justify-items: center;
     align-content: center;
     display: flex;

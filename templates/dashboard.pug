@@ -7,7 +7,10 @@ html
     script(src="/scripts/scroll")
   body
     div(id="dashHeader" class="styleDiv halfCentered")
-      h1 Convoes
+      div(class="inline spaced")
+        h1 Convoes
+        a(href="/settings")
+          img(src="/assets/images/settings.png" width=20 size=20)
       hr
       h2 Welcome, #{name} | 
         a(href="/logout") Logout  
