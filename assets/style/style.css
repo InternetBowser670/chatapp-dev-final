@@ -83,8 +83,15 @@
 
 .spacedApartInner {
     display: flex;
-    justify-content: space-between;
     width: 100%;
+}
+
+.spacedApartInner h1 {
+    margin-right: auto; /* Pushes the h1 to the left */
+}
+
+.spacedApartInner a {
+    margin-left: auto; /* Pushes the anchor to the right */
 }
 
 
