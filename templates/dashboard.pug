@@ -28,10 +28,12 @@ html
         form(action="/createchats" method="post")
           div
             label(for="chatname") Name:
+            br
             input(type="text" name="chatname" autocomplete="off" readonly 
   onfocus="this.removeAttribute('readonly');" required)
           div
             label(for="password") Password:
+            br
             input(type="password" autocomplete="off" readonly 
   onfocus="this.removeAttribute('readonly');" name="password" required)
           div

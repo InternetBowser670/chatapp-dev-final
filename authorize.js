@@ -23,7 +23,7 @@ const blocked = fs.readFileSync("pages/blocked.html", "utf8");
 exports.auth = async function (req, res, callback) {
     try {
         const authData = await sessions.findOne({
-            uuid: req.cookies.sessionId,
+            uuid: req.cookies.sessionId
         });
         if (
             authData &&
@@ -31,7 +31,8 @@ exports.auth = async function (req, res, callback) {
         ) {
             const user = await db.findOne({ username: authData.user });
             if (user) {
-                authData.chats = user.chats; // Attach chat access data
+                authData.chats = user.chats;
+                authData.originalName = user.originalName;
                 return callback(authData);
             } else {
                 throw new Error("User not found");

@@ -539,7 +539,7 @@ function generateSessionId(username, originalName) {
   var uuid = crypto.randomUUID();
   sessions.insertOne({
     uuid: uuid,
-    originalName: originalName,
+    originalName,
     user: username,
     role: "user",
   });
