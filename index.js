@@ -482,8 +482,11 @@ app.post("/updateUsername", (req, res) => {
   auth(req, res, async (authData) => {
     try {
       console.log(req.body.name); // Logging new username
-      console.log(authData);
+      console.log(authData.originalName);
+      console.log(authData.name);
+
       // Updating the username in the database using UUID as a unique identifier
+
       const result = await users.updateOne(
         { originalName: authData.originalName },
         { $set: { username: req.body.name } }, // Update operation

@@ -75,6 +75,19 @@
     padding: 1%;
 }
 
+.spacedApart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.spacedApartInner {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
 html {
     padding: 5px;
     background-color: rgb(2, 49, 94);
