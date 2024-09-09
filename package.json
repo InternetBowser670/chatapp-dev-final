@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 0",
     "start": "node index.js local",
     "startRepl": "node index.js replit",
-    "clear": "node db.js delete all"
+    "clear": "node db.js delete all",
+    "lineCount": "git ls-files --exclude-standard -- ':!:**/*.[pjs][npv]g' ':!:**/*.ai' ':!:.idea' ':!:**/*.eslintrc' ':!:package-lock.json' | xargs wc -l"
   },
   "keywords": [],
   "author": "",
