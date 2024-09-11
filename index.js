@@ -90,7 +90,8 @@ app.get("/", (req, res) => {
   res.end(homepage);
 });
 
-function authorizeWithPass((req, res), authData) {
+function authorizeWithPass(req, res, authData) {
+  console.log(authData)
   var userQuery = users.findOne({ username: authData.user });
   userQuery.then((user) => {
     if (!user) {
@@ -101,8 +102,10 @@ function authorizeWithPass((req, res), authData) {
     } else {
       bcrypt.compare(req.body.password, user.password, (err, result) => {
         if (result) {
+          console.log(true)
           return true
         } else {
+          console.log(false)
           return false
         }
       });
@@ -502,8 +505,8 @@ app.post("/updateUser", (req, res) => {
 app.post("/updateUsername", (req, res) => {
   auth(req, res, async (authData) => {
     try {
-
-      if (authorizeWithPass((req, res), authData)) {
+      if (authorizeWithPass(req, res, authData) == true) {
+        console.log("???")
         const result = await users.updateOne(
           { originalName: authData.originalName },
           { $set: { username: req.body.name } }, // Update operation
@@ -524,6 +527,7 @@ app.post("/updateUsername", (req, res) => {
           console.log("nah");
         }
       } else {
+        console.log("???????")
         res.json({ message: "Incorrect Password" });
       } 
     } catch (error) {
