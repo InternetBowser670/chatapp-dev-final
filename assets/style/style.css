@@ -19,12 +19,11 @@
 }
 
 #chatList {
-    margin: auto !important;
-    padding: 10px;
-    margin: 5px;
-    border: 1px solid white !important;
-    border-radius: 25px;
-    background-color: rgb(6, 98, 184);
+    max-width: 25% !important;
+}
+
+.chatLink {
+    text-overflow: ellipsis;
 }
 
 #styleDiv {
@@ -98,7 +97,7 @@
 html {
     padding: 5px;
     background-color: rgb(2, 49, 94);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: system-ui, c-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 5px;
 }
 

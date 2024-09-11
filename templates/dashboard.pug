@@ -17,15 +17,16 @@ html
         a(href="/logout") Logout  
       div(class="halfCentered styleDiv centerContent")
         h2 Chat List
-        div(class="styleDiv spacedApart")
+        div(class="styleDiv inline spacedApart")
           ul
             each chat in chats
               li
-                a(href=`/chats/${chat}`) #{chat}
-                form(method="post" action=`/deletechat/${chat}` class="inline")
-                  input(type="hidden" name="extra_submit_param" value="extra_submit_value")
-                  button(type="submit" name="submit_param" value="submit_value" class="link-button")
-                    img(href="/assets/trashcan")
+                div(class="inline spacedApart" id="chatList")
+                  a(href=`/chats/${chat}` class="chatLink") #{chat}
+                  form(method="post" style="border:0px;" action=`/deletechat/${chat}` display="block" class="inline")
+                    input(type="hidden" name="extra_submit_param" value="extra_submit_value")
+                    button(type="submit" style="border:0px;" name="submit_param" value="submit_value" class="link-button")
+                      img(src="/assets/trashcan.png" class="trashcan")
                 br
           
       
