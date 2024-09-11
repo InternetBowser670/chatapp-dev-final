@@ -43,6 +43,7 @@ const secretKey = crypto.randomBytes(32);
 
 const icon = path.join(__dirname, "/assets/images/favicon.ico");
 const settingsGear = path.join(__dirname, "/assets/images/settings.png");
+const trashcan = path.join(__dirname, "/assets/images/trashcan.png");
 
 console.log("secretkey is: ", secretKey);
 
@@ -71,7 +72,7 @@ const upload = multer();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array());
-app.use(express.json()); // For parsing application/json
+app.use(express.json());
 
 const login = fs.readFileSync("pages/login.html", "utf8");
 const updateUsername = fs.readFileSync("pages/changeName.html", "utf8");
@@ -534,6 +535,10 @@ app.get("/settings", (req, res) => {
     }
   });
 });
+
+app.get("/assets/trashcan.png", (req, res) => {
+  res.sendFile(trashcan);
+})
 
 function generateSessionId(username, originalName) {
   var uuid = crypto.randomUUID();

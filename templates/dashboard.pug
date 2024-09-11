@@ -17,11 +17,12 @@ html
         a(href="/logout") Logout  
       div(class="halfCentered styleDiv centerContent")
         h2 Chat List
-        div(class="styleDiv")
+        div(class="styleDiv spacedApart")
           ul
             each chat in chats
               li
                 a(href=`/chats/${chat}`) #{chat}
+                img(src="/assets/trashcan.png" class="trashcan")
                 br
           
       
