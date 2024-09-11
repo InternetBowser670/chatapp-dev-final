@@ -6,7 +6,7 @@ html
     link(rel="stylesheet", href="/styles/main")
     script(src="/scripts/scroll")
   body
-    div(id="dashHeader" class="styleDiv halfCentered")
+    div(id="dashHeader" class="styleDiv threeQtrCentered")
       div(class="inline spaced spacedApartInner")
         h1 Convoes
         a(href="/settings")
@@ -17,10 +17,10 @@ html
         a(href="/logout") Logout  
       div(class="halfCentered styleDiv centerContent")
         h2 Chat List
-        div(class="styleDiv inline spacedApart")
+        div(class="styleDiv inline spacedApart chatLink")
           ul
             each chat in chats
-              li
+              li(class="chatLink")
                 div(class="inline spacedApart" id="chatList")
                   a(href=`/chats/${chat}` class="chatLink")
                     p(class="chatLink") #{chat}
@@ -29,7 +29,6 @@ html
                     input(type="hidden" name="extra_submit_param" value="extra_submit_value")
                     button(type="submit" style="border:0px;" name="submit_param" value="submit_value" class="link-button")
                       img(src="/assets/trashcan.png" class="trashcan")
-                br
           
       
         form(action="/createchats" method="post")
