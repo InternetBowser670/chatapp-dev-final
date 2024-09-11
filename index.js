@@ -91,23 +91,24 @@ app.get("/", (req, res) => {
 });
 
 function authorizeWithPass(req, res, authData) {
-  console.log(authData)
   var userQuery = users.findOne({ username: authData.user });
-  userQuery.then((user) => {
+  return userQuery.then((user) => {
     if (!user) {
       res.sendFile(icon);
       res.writeHead(400);
       res.end();
-      return;
+      return false; // Return false if user not found
     } else {
-      bcrypt.compare(req.body.password, user.password, (err, result) => {
-        if (result) {
-          console.log(true)
-          return true
-        } else {
-          console.log(false)
-          return false
-        }
+      return new Promise((resolve, reject) => {
+        bcrypt.compare(req.body.password, user.password, (err, result) => {
+          if (err) {
+            reject(err); // Handle bcrypt errors
+          } else if (result) {
+            resolve(true); // Resolve with true if password matches
+          } else {
+            resolve(false); // Resolve with false if password doesn't match
+          }
+        });
       });
     }
   });
@@ -505,13 +506,13 @@ app.post("/updateUser", (req, res) => {
 app.post("/updateUsername", (req, res) => {
   auth(req, res, async (authData) => {
     try {
-      if (authorizeWithPass(req, res, authData) == true) {
-        console.log("???")
+      // Use async/await for authorizeWithPass since it's asynchronous
+      const isPasswordCorrect = await authorizeWithPass(req, res, authData);
+      if (isPasswordCorrect) {
         const result = await users.updateOne(
           { originalName: authData.originalName },
           { $set: { username: req.body.name } }, // Update operation
         );
-
         // Check if the document was updated
         if (result.modifiedCount > 0) {
           res.sendFile(icon); // Respond with the icon file
@@ -527,7 +528,6 @@ app.post("/updateUsername", (req, res) => {
           console.log("nah");
         }
       } else {
-        console.log("???????")
         res.json({ message: "Incorrect Password" });
       } 
     } catch (error) {
