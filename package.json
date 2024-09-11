@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
-    "start": "node index.js local",
-    "startRepl": "node index.js replit",
+    "start": "node index.js local && echo \"Running on local\"",
+    "startRepl": "node index.js replit && echo \"Running on replit\"",
     "clear": "node db.js delete all",
     "lineCount": "git ls-files --exclude-standard -- ':!:**/*.[pjs][npv]g' ':!:**/*.ai' ':!:.idea' ':!:**/*.eslintrc' ':!:package-lock.json' | xargs wc -l",
     "benchmark": "node benchmark.js"
