@@ -90,6 +90,26 @@ app.get("/", (req, res) => {
   res.end(homepage);
 });
 
+function authorizeWithPass((req, res), authData) {
+  var userQuery = users.findOne({ username: authData.user });
+  userQuery.then((user) => {
+    if (!user) {
+      res.sendFile(icon);
+      res.writeHead(400);
+      res.end();
+      return;
+    } else {
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (result) {
+          return true
+        } else {
+          return false
+        }
+      });
+    }
+  });
+}
+
 app.get("/createacc", (req, res) => {
   console.log("2");
   if (req.cookies.sessionId) {
@@ -482,31 +502,30 @@ app.post("/updateUser", (req, res) => {
 app.post("/updateUsername", (req, res) => {
   auth(req, res, async (authData) => {
     try {
-      console.log(req.body.name); // Logging new username
-      console.log(authData.originalName);
-      console.log(authData.name);
 
-      // Updating the username in the database using UUID as a unique identifier
+      if (authorizeWithPass((req, res), authData)) {
+        const result = await users.updateOne(
+          { originalName: authData.originalName },
+          { $set: { username: req.body.name } }, // Update operation
+        );
 
-      const result = await users.updateOne(
-        { originalName: authData.originalName },
-        { $set: { username: req.body.name } }, // Update operation
-      );
-
-      // Check if the document was updated
-      if (result.modifiedCount > 0) {
-        res.sendFile(icon); // Respond with the icon file
-        console.log("w");
-        sessions.deleteOne({ uuid: req.cookies.sessionId });
-        res.clearCookie("sessionId");
-        res.sendFile(icon);
-        var session = generateSessionId(req.body.name, authData.originalName);
-        res.cookie("sessionId", session);
-        res.end(login);
+        // Check if the document was updated
+        if (result.modifiedCount > 0) {
+          res.sendFile(icon); // Respond with the icon file
+          console.log("w");
+          sessions.deleteOne({ uuid: req.cookies.sessionId });
+          res.clearCookie("sessionId");
+          res.sendFile(icon);
+          var session = generateSessionId(req.body.name, authData.originalName);
+          res.cookie("sessionId", session);
+          res.end(login);
+        } else {
+          res.status(400).send("No document was updated");
+          console.log("nah");
+        }
       } else {
-        res.status(400).send("No document was updated");
-        console.log("nah");
-      }
+        res.json({ message: "Incorrect Password" });
+      } 
     } catch (error) {
       console.error(error); // Log any errors
       res.status(500).send("Error updating username");

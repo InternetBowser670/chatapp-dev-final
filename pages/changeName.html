@@ -20,9 +20,24 @@
       <br>
       <label for="password">Password:</label>
       <br>
-      <input type="password" placeholder="Current password" name="password">
+      <input type="password" id="password" placeholder="Current password" name="password">
+      <span id="message"></span>
       <button  id="submit" type="submit">Submit</button>
   </form>
   <script src="/static/updateuser2.js"></script>
+  <script>
+    const form = document.querySelector('form');
+    const message = document.getElementById('message');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const response = await fetch('/changeName', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      message.textContent = data.message;
+    });
+  </script>
 </body>
 </html>
