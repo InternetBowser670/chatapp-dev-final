@@ -22,7 +22,10 @@ html
             each chat in chats
               li
                 a(href=`/chats/${chat}`) #{chat}
-                img(src="/assets/trashcan.png" class="trashcan")
+                form(method="post" action=`/deletechat/${chat}` class="inline")
+                  input(type="hidden" name="extra_submit_param" value="extra_submit_value")
+                  button(type="submit" name="submit_param" value="submit_value" class="link-button")
+                    img(href="/assets/trashcan")
                 br
           
       
