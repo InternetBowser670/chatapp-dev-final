@@ -25,10 +25,11 @@ html
                   a(href=`/chats/${chat}` class="chatLink")
                     p(class="chatLink") #{chat}
                     
-                  form(method="post" style="border:0px;" action=`/deletechat/${chat}` display="block" class="inline")
-                    input(type="hidden" name="extra_submit_param" value="extra_submit_value")
-                    button(type="submit" style="border:0px;" name="submit_param" value="submit_value" class="link-button")
-                      img(src="/assets/trashcan.png" class="trashcan")
+                  form(method="post", style="border:0px;", action=`/deletechat/${encodeURIComponent(chat)}`, class="inline")
+                    input(type="hidden", name="extra_submit_param", value="extra_submit_value")
+                    button(type="submit", style="border:0px;", name="submit_param", value="submit_value", class="link-button")
+                      img(src="/assets/trashcan.png", class="trashcan")
+
           
       
         form(action="/createchats" method="post")

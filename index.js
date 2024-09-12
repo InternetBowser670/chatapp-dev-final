@@ -607,6 +607,12 @@ app.get("/assets/trashcan.png", (req, res) => {
   res.sendFile(trashcan);
 })
 
+app.post("/deletechat/:chatname", (req, res) => {
+  auth(req, res, async (authData) => {
+    res.redirect(dashboard);
+  })
+})
+
 function generateSessionId(username, originalName) {
   var uuid = crypto.randomUUID();
   sessions.insertOne({
