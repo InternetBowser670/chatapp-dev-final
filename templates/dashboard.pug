@@ -6,6 +6,7 @@ html
     link(rel="stylesheet", href="/styles/main")
     script(src="/scripts/scroll")
   body
+  
     div(id="dashHeader" class="styleDiv threeQtrCentered")
       div(class="inline spaced spacedApartInner")
         h1 Convoes
@@ -20,12 +21,12 @@ html
         div(class="styleDiv inline spacedApart chatLink")
           ul
             each chat in chats
+              - var chatName = chat
               li(class="chatLink")
                 div(class="inline spacedApart" id="chatList")
                   a(href=`/chats/${chat}` class="chatLink")
-                    p(class="chatLink") #{chat}
-                    
-                  form(method="post", style="border:0px;", action=`/deletechat/${encodeURIComponent(chat)}`, class="inline")
+                    p(class="chatLink") #{chat}   
+                  form(method="post", style="border:0px;", action="/deletechat/#{chat}", class="inline")
                     input(type="hidden", name="extra_submit_param", value="extra_submit_value")
                     button(type="submit", style="border:0px;", name="submit_param", value="submit_value", class="link-button")
                       img(src="/assets/trashcan.png", class="trashcan")
