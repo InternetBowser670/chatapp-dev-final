@@ -14,6 +14,12 @@ const WebSocket = require("ws");
 const { error } = require("console");
 const run = process.argv[2];
 const stylesheet = path.join(__dirname, "/assets/style/style.css");
+const metascraper = require('metascraper')([
+  require('metascraper-image')(),
+  require('metascraper-title')(),
+  require('metascraper-description')(),
+  require('metascraper-url')()
+]);
 
 const wsPort = 8080;
 
@@ -113,6 +119,35 @@ function authorizeWithPass(req, res, authData) {
     }
   });
 }
+
+async function handleMessage(chatname, username, content) {
+  let preview = null;
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const urls = content.match(urlRegex);
+
+  if (urls && urls.length > 0) {
+      const url = urls[0]; // Only preview the first URL for simplicity
+      try {
+          // Dynamically import 'got'
+          const got = (await import('got')).default;
+
+          const { body: html, url: fetchedUrl } = await got(url);
+          const metadata = await metascraper({ html, url: fetchedUrl });
+          preview = {
+              title: metadata.title,
+              description: metadata.description,
+              image: metadata.image
+          };
+      } catch (error) {
+          console.error('Failed to fetch link preview:', error);
+      }
+  }
+
+  return preview;
+}
+
+
+
 
 app.get("/createacc", (req, res) => {
   console.log("2");
@@ -279,99 +314,109 @@ onfocus="this.removeAttribute('readonly');" name="message" name="message" placeh
           <input type="submit" name="submit">
         </form>
         <script>
-        
-          const ws = new WebSocket(\`${wsURL}\`);
-const messagesDiv = document.getElementById('messages');
-const messageForm = document.getElementById('messageForm');
-const messageInput = document.getElementById('messageInput');
-const chatname = "${chatname}";
-const username = "${authData.user}";
-function scrollToBottom() {
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  let ws;
+if (!ws || ws.readyState !== WebSocket.OPEN) {
+    ws = new WebSocket(\`${wsURL}\`);
 }
-scrollToBottom()
+  const messagesDiv = document.getElementById('messages');
+  const messageForm = document.getElementById('messageForm');
+  const messageInput = document.getElementById('messageInput');
+  const chatname = "${chatname}";
+  const username = "${authData.user}";
 
-ws.onmessage = event => {
-    scrollToBottom()
-    let data;
+  // Scroll to the bottom of the messages container
+  function scrollToBottom() {
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+  scrollToBottom();
 
-    if (typeof event.data === 'string') {
-        data = event.data;
-    } else if (event.data instanceof Blob) {
+  // Handle incoming WebSocket messages
+  ws.onmessage = (event) => {
+    console.log("WS RECEIVED MESSAGE");
+
+    if (event.data instanceof Blob) {
+        // If the message is a Blob, convert it to text first
         const reader = new FileReader();
         reader.onload = () => {
-            data = reader.result;
-            processMessage(data);
+            try {
+                const data = JSON.parse(reader.result);
+                console.log(data);  // Log the data
+                processMessage(data);  // Call processMessage once
+            } catch (error) {
+                console.error('Error parsing message:', error);
+            }
         };
         reader.readAsText(event.data);
-        return;
-    } else if (event.data instanceof ArrayBuffer) {
-        data = new TextDecoder().decode(event.data);
     } else {
-        console.error('Unsupported WebSocket message type:', event.data);
-        return;
-    }
-
-    processMessage(data);
-    scrollToBottom()
-};
-
-function processMessage(data) {
-    try {
-        const parsedData = JSON.parse(data);
-        const { chatname: incomingChatname, username: incomingUsername, content } = parsedData;
-
-        if (incomingChatname && incomingUsername && content) {
-            if (incomingChatname === chatname) {
-                const messageElement = document.createElement('div');
-                messageElement.innerHTML = \`<strong>\${incomingUsername}:</strong> \${content} <br> <br>\`;
-                messagesDiv.appendChild(messageElement);
-                messagesDiv.offsetHeight
-                scrollToBottom()
-            }
-        } else {
-            console.error('Incomplete message data:', parsedData);
+        try {
+            const data = JSON.parse(event.data);
+            console.log(data);  // Log the data
+            processMessage(data);  // Call processMessage once
+        } catch (error) {
+            console.error('Error parsing message:', error);
         }
-    } catch (error) {
-        console.error('Error parsing message data:', error);
     }
-}
 
-messageForm.addEventListener('submit', event => {
+    // Ensure scrollToBottom is only called once, after handling the message
+    scrollToBottom();
+};
+
+  // Function to handle the parsed message data
+  function processMessage(data) {
+    const { chatname: incomingChatname, username: incomingUsername, content } = data;
+    console.log(chatname, username, content)
+    // Check if the message is for the current chatroom
+    if (incomingChatname === chatname) {
+      const messageElement = document.createElement('div');
+      const br = document.createElement('br');
+      messageElement.innerHTML = \`<strong>\${incomingUsername}:</strong> \${content}\`;
+      console.log(\`<strong>\${incomingUsername}:</strong> \${content}\`)
+      // Append the new message to the chat window
+      messagesDiv.appendChild(messageElement);
+      messagesDiv.appendChild(br);
+      // Scroll to the bottom
+      scrollToBottom();
+    }
+  }
+
+  // Handle message submission
+  messageForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (messageInput.value.trim() == '') {
-    return
-    }
-    
-    var formData = new FormData(messageForm);
-    fetch("/messages/${chatname}", {
-    method: "POST",
-    body: formData,
-    header: {
-      "Content-Type": "multipart/form-data"
-    }
-  })
 
-    const message = messageInput.value;
-    if (message && username) {
-        ws.send(JSON.stringify({ chatname, username, content: message }));
-        messageInput.value = '';
-    }
-});
+    // Optionally, submit the message to the server (if you want to save it on the backend)
+      const formData = new FormData(messageForm); // Capture form data
+    console.log("formdata: ", [...formData.entries()]); // Log the form data
 
-ws.onopen = () => {
+    fetch(\`/messages/${chatname}\`, {
+      method: 'POST',
+      body: formData
+    })
+
+
+    const message = messageInput.value.trim();
+    if (message) {
+      // Send message to server via WebSocket
+      ws.send(JSON.stringify({ chatname, username, content: message }));
+
+      // Clear input field after sending
+      messageInput.value = '';
+
+      
+    }
+  });
+
+  ws.onopen = () => {
     console.log('WebSocket connection established');
-};
+  };
 
-ws.onerror = (error) => {
+  ws.onerror = (error) => {
     console.error('WebSocket error:', error);
-};
+  };
 
-ws.onclose = () => {
+  ws.onclose = () => {
     console.log('WebSocket connection closed');
-};
-
-        </script>
+  };
+</script>
       </body>
       </html>
     `;
@@ -462,6 +507,7 @@ app.post("/messages/:chatname", (req, res) => {
     const message = req.body.message;
     const username = authData.user;
     const chatCollection = client.db("dev").collection(chatname);
+    console.log(req.body)
 
     await chatCollection.insertOne({
       username,
@@ -471,18 +517,16 @@ app.post("/messages/:chatname", (req, res) => {
 
     const formattedMessage = JSON.stringify({
       chatname,
+      username,
       content: `<p><strong>${username}:</strong> ${message}</p>`,
     });
 
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(formattedMessage);
-      }
-    });
 
     res.redirect(`/chats/${chatname}`);
   });
 });
+
+
 
 app.post("/updateUser", (req, res) => {
   auth(req, res, (authData) => {
