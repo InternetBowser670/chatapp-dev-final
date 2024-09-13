@@ -4,7 +4,7 @@ html
     title Convoes
     link(rel='icon', href='/favicon.ico', type='image/x-icon')
     link(rel="stylesheet", href="/styles/main")
-    script(src="/scripts/scroll")
+    script(src="/scripts/scroll") 
   body
     script.
       function myFunction(chat) {
@@ -26,13 +26,13 @@ html
         a(href="/logout") Logout  
       div(class="halfCentered styleDiv centerContent")
         h2 Chat List
-        div(class="styleDiv inline spacedApart chatLink")
-          ul
+        div(class="styleDiv inline spacedApart chatLink scrollable" id="chatList")
+          ul(class="draggable-list")
             each chat in chats
               - var chatName = chat
               - chat = chat.toString()
 
-              li(class="chatLink")
+              li(class="chatLink" draggable="true")
                 div(class="inline spacedApart" id="chatList")
                   a(href=`/chats/${chat}` class="chatLink")
                     p(class="chatLink") #{chat}   

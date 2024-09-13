@@ -87,6 +87,7 @@ const blocked = fs.readFileSync("pages/blocked.html", "utf8");
 const changeBday = fs.readFileSync("pages/changeBday.html", "utf8");
 const homepage = fs.readFileSync("pages/homepage.html", "utf8");
 const settings = fs.readFileSync("pages/settings.html", "utf8");
+const scroll = path.join(__dirname, "/static/scroll.js")
 
 // Compile pug template(s)
 const dashboard = pug.compileFile("./templates/dashboard.pug");
@@ -615,8 +616,14 @@ app.post("/deletechat/:chatname", (req, res) => {
       { username: username },  // Find the user by username
       { $pull: { chats: chatname } }  // Remove the chat from the 'chats' array
     );
+    res.location.reload();
+
     res.redirect(dashboard);
   })
+})
+
+app.get("/scripts/scroll", (req, res) => {
+  res.sendFile(scroll)
 })
 
 function generateSessionId(username, originalName) {

@@ -1,9 +1,10 @@
 .scrollable {
     height: 60%; /* Fixed height */
-    overflow-y: auto; /* Enable vertical scrolling */
+    overflow: auto; /* Enable vertical scrolling */
     padding: 10px; /* Optional: Add padding */
     border-radius: 10px;
     background-color: rgb(6, 98, 184);
+    text-overflow: ellipsis;
 }
 
 #messageInput {
@@ -17,6 +18,10 @@
     border-radius: 25px !important;
     background-color: rgb(6, 98, 184);
 }
+
+.dragging {
+    opacity: 0.5;
+  }
 
 #chatList {
     max-width: 25% !important;
