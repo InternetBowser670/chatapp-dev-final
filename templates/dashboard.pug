@@ -7,11 +7,29 @@ html
     script(src="/scripts/scroll") 
   body
     script.
+      async function checkPing() {
+        const start = performance.now();  // Record start time
+        await fetch('/ping');  // Send a request to the server (can be a simple endpoint)
+        const end = performance.now();    // Record end time
+        const ping = end - start;  // Calculate the difference
+        console.log(`Ping: ${ping} ms`);
+        return ping
+      }
+
+
+      function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        }
       function myFunction(chat) {
         alert(`Deleted chat \"${chat}\"`)
         fetch(`/deletechat/${chat}`, { 
             method: "POST"
         })
+        
+        
+        sleep(checkPing() + 2000)
+
+        window.location.reload()
       }
 
 

@@ -586,6 +586,11 @@ app.get("/styles/main", (req, res) => {
   res.sendFile(stylesheet);
 });
 
+app.get('/ping', (req, res) => {
+  res.send('pong');  // Respond quickly
+});
+
+
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(icon);
 });
@@ -616,7 +621,7 @@ app.post("/deletechat/:chatname", (req, res) => {
       { username: username },  // Find the user by username
       { $pull: { chats: chatname } }  // Remove the chat from the 'chats' array
     );
-    res.location.reload();
+    
 
     res.redirect(dashboard);
   })
