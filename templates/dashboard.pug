@@ -6,7 +6,15 @@ html
     link(rel="stylesheet", href="/styles/main")
     script(src="/scripts/scroll")
   body
-  
+    script.
+      function myFunction(chat) {
+        alert(`Deleted chat \"${chat}\"`)
+        fetch(`/deletechat/${chat}`, { 
+            method: "POST"
+        })
+      }
+
+
     div(id="dashHeader" class="styleDiv threeQtrCentered")
       div(class="inline spaced spacedApartInner")
         h1 Convoes
@@ -22,14 +30,14 @@ html
           ul
             each chat in chats
               - var chatName = chat
+              - chat = chat.toString()
+
               li(class="chatLink")
                 div(class="inline spacedApart" id="chatList")
                   a(href=`/chats/${chat}` class="chatLink")
                     p(class="chatLink") #{chat}   
-                  form(method="post", style="border:0px;", action="/deletechat/#{chat}", class="inline")
-                    input(type="hidden", name="extra_submit_param", value="extra_submit_value")
-                    button(type="submit", style="border:0px;", name="submit_param", value="submit_value", class="link-button")
-                      img(src="/assets/trashcan.png", class="trashcan")
+                  button(onclick=`myFunction("${chat}")` style="background: none; border: none; color: inherit; cursor: pointer;")
+                    img(src="/assets/trashcan.png", class="trashcan")
 
           
       

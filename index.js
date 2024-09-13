@@ -608,7 +608,13 @@ app.get("/assets/trashcan.png", (req, res) => {
 })
 
 app.post("/deletechat/:chatname", (req, res) => {
+  const chatname = req.params.chatname;
   auth(req, res, async (authData) => {
+    const username = authData.user;
+    users.updateOne(
+      { username: username },  // Find the user by username
+      { $pull: { chats: chatname } }  // Remove the chat from the 'chats' array
+    );
     res.redirect(dashboard);
   })
 })

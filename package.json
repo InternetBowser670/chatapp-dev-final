@@ -35,5 +35,8 @@
     "pug": "^3.0.3",
     "speedybenchmark": "^1.2.0",
     "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4"
   }
 }
