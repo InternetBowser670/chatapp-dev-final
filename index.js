@@ -543,8 +543,7 @@ app.post("/messages/:chatname", (req, res) => {
     const message = req.body.message;
     const username = authData.user;
     const chatCollection = client.db("dev").collection(chatname);
-    console.log(req.body)
-
+    
     await chatCollection.insertOne({
       username,
       content: message,
