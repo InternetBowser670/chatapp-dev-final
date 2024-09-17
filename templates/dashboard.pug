@@ -51,10 +51,10 @@ html
               - chat = chat.toString()
 
               li(class="chatLink" draggable="true")
-                div(class="inline spacedApart" id="chatList")
+                div(class="spacedApart" id="chatList")
                   a(href=`/chats/${chat}` class="chatLink")
                     p(class="chatLink") #{chat}   
-                  button(onclick=`myFunction("${chat}")` style="background: none; border: none; color: inherit; cursor: pointer;")
+                  button(onclick=`myFunction("${chat}")` style="background: none; justfy-self: flex-end; border: none; color: inherit; cursor: pointer;" class="trashcan")
                     img(src="/assets/trashcan.png", class="trashcan")
 
           
