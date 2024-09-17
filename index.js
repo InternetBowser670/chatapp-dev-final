@@ -21,6 +21,10 @@ const metascraper = require('metascraper')([
   require('metascraper-url')()
 ]);
 
+const { fetchUrlPreview } = require('@internetbowser/linkpreview');
+
+
+
 const wsPort = 8080;
 
 let webURL;
@@ -41,6 +45,10 @@ if (run == "replit") {
   );
   throw new "Run not set to 'replit' or 'local'. in the cli args."();
 }
+
+fetchUrlPreview("https://google.com").then(previewHtml => {
+  console.log("google: ", previewHtml);
+})
 
 const uri =
   "mongodb+srv://Josh:Password@chatapp.hvuyebo.mongodb.net/?retryWrites=true&w=majority&appName=chatapp";
