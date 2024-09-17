@@ -105,6 +105,33 @@ app.get("/", (req, res) => {
   res.end(homepage);
 });
 
+async function formatMessagesWithPreviews(messages) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  const formattedMessagesPromises = messages.map(async (msg) => {
+    const username = msg.username || "Unknown";
+    let content = msg.content || "No content";
+
+    const urls = content.match(urlRegex);
+    if (urls) {
+      for (const url of urls) {
+        try {
+          const previewHtml = await fetchUrlPreview(url);
+          content = content.replace(url, previewHtml);
+        } catch (error) {
+          console.error('Error fetching URL preview:', error);
+        }
+      }
+    }
+
+    return `<p><strong>${username}:</strong> ${content}</p>`;
+  });
+
+  const formatted = await Promise.all(formattedMessagesPromises);
+  return formatted.join("\n"); // Return the result directly
+}
+
+
 function authorizeWithPass(req, res, authData) {
   var userQuery = users.findOne({ username: authData.user });
   return userQuery.then((user) => {
