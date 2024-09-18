@@ -16,20 +16,21 @@ html
         return ping
       }
 
+      checkPing()
 
       function sleep(ms) {
           return new Promise(resolve => setTimeout(resolve, ms));
         }
       function myFunction(chat) {
-        alert(`Deleted chat \"${chat}\"`)
         fetch(`/deletechat/${chat}`, { 
             method: "POST"
         })
-        
-        
-        sleep(checkPing() + 2000)
+        sleep(checkPing() + 500)
 
         window.location.reload()
+
+        alert(`Deleted chat \"${chat}\", you may have to reload.`)
+
       }
 
 
@@ -51,12 +52,11 @@ html
               - chat = chat.toString()
 
               li(class="chatLink" draggable="true")
-                div(class="spacedApart" id="chatList")
+                div(class="spacedApart")
                   a(href=`/chats/${chat}` class="chatLink")
-                    p(class="chatLink") #{chat}   
-                  button(onclick=`myFunction("${chat}")` style="background: none; justfy-self: flex-end; border: none; color: inherit; cursor: pointer;" class="trashcan")
+                    p(class="chatLink") #{chat}
+                  button(onclick=`myFunction("${chat}")` style="background: none; justify-self: flex-end; border: none; color: inherit; cursor: pointer;" class="trashcan")
                     img(src="/assets/trashcan.png", class="trashcan")
-
           
       
         form(action="/createchats" method="post")
