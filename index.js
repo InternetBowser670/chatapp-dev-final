@@ -328,7 +328,7 @@ app.get("/chats/:chatname", async (req, res) => {
       console.log("No messages found");
       formattedMessages = ""; // Default to an empty string if there are no messages
     }
-
+    console.log("e: ", formattedMessages)
     // Prepare the HTML content
     const defaultContent = `
       <html>
