@@ -319,14 +319,11 @@ app.get("/chats/:chatname", async (req, res) => {
     let formattedMessages = ""; // Declare outside the if-else block
 
     if (messages.length > 0) {
-      // Check if there are messages in the array
-      formattedMessages = messages
-        .map((msg) => {
-          const username = msg.username || "Unknown";
-          const content = msg.content || "No content";
-          return `<p><strong>${username}:</strong> ${content}</p>`;
-        })
-        .join("\n");
+      formatMessagesWithPreviews(messages).then((finalMessages) => {
+        formattedMessages = finalMessages
+        console.log(formattedMessages)
+      });
+      
     } else {
       console.log("No messages found");
       formattedMessages = ""; // Default to an empty string if there are no messages
