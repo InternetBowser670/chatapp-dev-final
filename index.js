@@ -14,16 +14,14 @@ const WebSocket = require("ws");
 const { error } = require("console");
 const run = process.argv[2];
 const stylesheet = path.join(__dirname, "/assets/style/style.css");
-const metascraper = require('metascraper')([
-  require('metascraper-image')(),
-  require('metascraper-title')(),
-  require('metascraper-description')(),
-  require('metascraper-url')()
+const metascraper = require("metascraper")([
+  require("metascraper-image")(),
+  require("metascraper-title")(),
+  require("metascraper-description")(),
+  require("metascraper-url")(),
 ]);
 
-const { fetchUrlPreview } = require('@internetbowser/linkpreview');
-
-
+const { fetchUrlPreview } = require("@internetbowser/linkpreview");
 
 const wsPort = 8080;
 
@@ -46,9 +44,9 @@ if (run == "replit") {
   throw new "Run not set to 'replit' or 'local'. in the cli args."();
 }
 
-fetchUrlPreview("https://google.com").then(previewHtml => {
+fetchUrlPreview("https://google.com").then((previewHtml) => {
   console.log("google: ", previewHtml);
-})
+});
 
 const uri =
   "mongodb+srv://Josh:Password@chatapp.hvuyebo.mongodb.net/?retryWrites=true&w=majority&appName=chatapp";
@@ -95,7 +93,7 @@ const blocked = fs.readFileSync("pages/blocked.html", "utf8");
 const changeBday = fs.readFileSync("pages/changeBday.html", "utf8");
 const homepage = fs.readFileSync("pages/homepage.html", "utf8");
 const settings = fs.readFileSync("pages/settings.html", "utf8");
-const scroll = path.join(__dirname, "/static/scroll.js")
+const scroll = path.join(__dirname, "/static/scroll.js");
 
 // Compile pug template(s)
 const dashboard = pug.compileFile("./templates/dashboard.pug");
@@ -119,7 +117,7 @@ async function formatMessagesWithPreviews(messages) {
           const previewHtml = await fetchUrlPreview(url);
           content = content.replace(url, previewHtml);
         } catch (error) {
-          console.error('Error fetching URL preview:', error);
+          console.error("Error fetching URL preview:", error);
         }
       }
     }
@@ -130,7 +128,6 @@ async function formatMessagesWithPreviews(messages) {
   const formatted = await Promise.all(formattedMessagesPromises);
   return formatted.join("\n"); // Return the result directly
 }
-
 
 function authorizeWithPass(req, res, authData) {
   var userQuery = users.findOne({ username: authData.user });
@@ -162,28 +159,25 @@ async function handleMessage(chatname, username, content) {
   const urls = content.match(urlRegex);
 
   if (urls && urls.length > 0) {
-      const url = urls[0]; // Only preview the first URL for simplicity
-      try {
-          // Dynamically import 'got'
-          const got = (await import('got')).default;
+    const url = urls[0]; // Only preview the first URL for simplicity
+    try {
+      // Dynamically import 'got'
+      const got = (await import("got")).default;
 
-          const { body: html, url: fetchedUrl } = await got(url);
-          const metadata = await metascraper({ html, url: fetchedUrl });
-          preview = {
-              title: metadata.title,
-              description: metadata.description,
-              image: metadata.image
-          };
-      } catch (error) {
-          console.error('Failed to fetch link preview:', error);
-      }
+      const { body: html, url: fetchedUrl } = await got(url);
+      const metadata = await metascraper({ html, url: fetchedUrl });
+      preview = {
+        title: metadata.title,
+        description: metadata.description,
+        image: metadata.image,
+      };
+    } catch (error) {
+      console.error("Failed to fetch link preview:", error);
+    }
   }
 
   return preview;
 }
-
-
-
 
 app.get("/createacc", (req, res) => {
   console.log("2");
@@ -233,8 +227,8 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/assets/images/settings.png", (req, res) => {
-  res.sendFile(settingsGear)
-})
+  res.sendFile(settingsGear);
+});
 
 app.post("/signup", async (req, res) => {
   try {
@@ -319,16 +313,18 @@ app.get("/chats/:chatname", async (req, res) => {
     let formattedMessages = ""; // Declare outside the if-else block
 
     if (messages.length > 0) {
-      formatMessagesWithPreviews(messages).then((finalMessages) => {
-        formattedMessages = finalMessages
-        console.log(formattedMessages)
-      });
-      
+      formattedMessages = messages
+      .map((msg) => {
+        const username = msg.username || "Unknown";
+        const content = msg.content || "No content";
+        return `<p><strong>${username}:</strong> ${content}</p>`;
+      })
+      .join("\n");
     } else {
       console.log("No messages found");
       formattedMessages = ""; // Default to an empty string if there are no messages
     }
-    console.log("e: ", formattedMessages)
+    console.log("e: ", formattedMessages);
     // Prepare the HTML content
     const defaultContent = `
       <html>
@@ -540,7 +536,7 @@ app.post("/messages/:chatname", (req, res) => {
     const message = req.body.message;
     const username = authData.user;
     const chatCollection = client.db("dev").collection(chatname);
-    
+
     await chatCollection.insertOne({
       username,
       content: message,
@@ -553,12 +549,9 @@ app.post("/messages/:chatname", (req, res) => {
       content: `<p><strong>${username}:</strong> ${message}</p>`,
     });
 
-
     res.redirect(`/chats/${chatname}`);
   });
 });
-
-
 
 app.post("/updateUser", (req, res) => {
   auth(req, res, (authData) => {
@@ -605,7 +598,7 @@ app.post("/updateUsername", (req, res) => {
         }
       } else {
         res.json({ message: "Incorrect Password" });
-      } 
+      }
     } catch (error) {
       console.error(error); // Log any errors
       res.status(500).send("Error updating username");
@@ -617,10 +610,9 @@ app.get("/styles/main", (req, res) => {
   res.sendFile(stylesheet);
 });
 
-app.get('/ping', (req, res) => {
-  res.send('pong');  // Respond quickly
+app.get("/ping", (req, res) => {
+  res.send("pong"); // Respond quickly
 });
-
 
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(icon);
@@ -642,25 +634,24 @@ app.get("/settings", (req, res) => {
 
 app.get("/assets/trashcan.png", (req, res) => {
   res.sendFile(trashcan);
-})
+});
 
 app.post("/deletechat/:chatname", (req, res) => {
   const chatname = req.params.chatname;
   auth(req, res, async (authData) => {
     const username = authData.user;
     users.updateOne(
-      { username: username },  // Find the user by username
-      { $pull: { chats: chatname } }  // Remove the chat from the 'chats' array
+      { username: username }, // Find the user by username
+      { $pull: { chats: chatname } }, // Remove the chat from the 'chats' array
     );
-    
 
     res.redirect(dashboard);
-  })
-})
+  });
+});
 
 app.get("/scripts/scroll", (req, res) => {
-  res.sendFile(scroll)
-})
+  res.sendFile(scroll);
+});
 
 function generateSessionId(username, originalName) {
   var uuid = crypto.randomUUID();
