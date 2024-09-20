@@ -22,6 +22,7 @@ const metascraper = require("metascraper")([
 ]);
 
 const { fetchUrlPreview } = require("@internetbowser/linkpreview");
+const { console } = require("inspector");
 
 const wsPort = 8080;
 
@@ -122,12 +123,15 @@ async function formatMessagesWithPreviews(messages) {
       }
     }
 
+    // Return the formatted message with or without the preview
     return `<p><strong>${username}:</strong> ${content}</p>`;
   });
 
-  const formatted = await Promise.all(formattedMessagesPromises);
-  return formatted.join("\n"); // Return the result directly
+  // Wait for all promises to resolve and join the results into a single string
+  const formattedMessages = await Promise.all(formattedMessagesPromises);
+  return formattedMessages.join("\n");
 }
+
 
 function authorizeWithPass(req, res, authData) {
   var userQuery = users.findOne({ username: authData.user });
@@ -324,7 +328,8 @@ app.get("/chats/:chatname", async (req, res) => {
       console.log("No messages found");
       formattedMessages = ""; // Default to an empty string if there are no messages
     }
-    console.log("e: ", formattedMessages);
+    console.log("page accesed")
+    console.log(formatMessagesWithPreviews(messages))
     // Prepare the HTML content
     const defaultContent = `
       <html>
