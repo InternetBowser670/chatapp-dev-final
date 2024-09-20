@@ -11,7 +11,6 @@ const crypto = require("crypto");
 const fs = require("fs");
 const http = require("http");
 const WebSocket = require("ws");
-const { error } = require("console");
 const run = process.argv[2];
 const stylesheet = path.join(__dirname, "/assets/style/style.css");
 const metascraper = require("metascraper")([
@@ -22,7 +21,6 @@ const metascraper = require("metascraper")([
 ]);
 
 const { fetchUrlPreview } = require("@internetbowser/linkpreview");
-const { console } = require("inspector");
 
 const wsPort = 8080;
 
@@ -329,7 +327,8 @@ app.get("/chats/:chatname", async (req, res) => {
       formattedMessages = ""; // Default to an empty string if there are no messages
     }
     console.log("page accesed")
-    console.log(formatMessagesWithPreviews(messages))
+    console.log( await formatMessagesWithPreviews(messages))
+    //formattedMessages = await formatMessagesWithPreviews(messages) !TO BE DONE LATER!
     // Prepare the HTML content
     const defaultContent = `
       <html>
