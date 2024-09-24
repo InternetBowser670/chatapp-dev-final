@@ -327,7 +327,7 @@ app.get("/chats/:chatname", async (req, res) => {
       formattedMessages = ""; // Default to an empty string if there are no messages
     }
     console.log("page accesed")
-    console.log( await formatMessagesWithPreviews(messages))
+    attemptedMesseges = await formatMessagesWithPreviews(messages)
     //formattedMessages = await formatMessagesWithPreviews(messages) !TO BE DONE LATER!
     // Prepare the HTML content
     const defaultContent = `
@@ -339,7 +339,7 @@ app.get("/chats/:chatname", async (req, res) => {
       </head>
       <body>
         <h1>Chat: ${chatname} | <a href="/dashboard">Dashboard</a></h1>
-        <div id="messages" class="scrollable styleDiv">${formattedMessages}</div>
+        <div id="messages" class="scrollable styleDiv">${attemptedMesseges}</div>
         <br>
         <form id="messageForm" method="POST" action="/messages/${chatname}">
           <input type="text" width=100% id="messageInput" autocomplete="off" readonly 

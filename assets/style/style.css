@@ -204,3 +204,12 @@ ul li::marker {
     margin-left: 15px;
     align-self: center; /* Ensures it stays in line with the text */
 }
+
+.preview-container {
+    padding: 15px;
+    margin: 5px;
+    border: 1px solid white !important;
+    border-radius: 25px !important;
+    background-color: rgb(6, 98, 184); 
+    max-width: auto;
+}
