@@ -211,5 +211,9 @@ ul li::marker {
     border: 1px solid white !important;
     border-radius: 25px !important;
     background-color: rgb(6, 98, 184); 
-    max-width: auto;
+    max-width: 25%;
+}
+
+.preview-image {
+    max-width: 90%;
 }

@@ -327,6 +327,7 @@ app.get("/chats/:chatname", async (req, res) => {
       formattedMessages = ""; // Default to an empty string if there are no messages
     }
     console.log("page accesed")
+
     attemptedMesseges = await formatMessagesWithPreviews(messages)
     //formattedMessages = await formatMessagesWithPreviews(messages) !TO BE DONE LATER!
     // Prepare the HTML content
