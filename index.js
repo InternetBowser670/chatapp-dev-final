@@ -340,7 +340,7 @@ app.get("/chats/:chatname", async (req, res) => {
       </head>
       <body>
         <h1>Chat: ${chatname} | <a href="/dashboard">Dashboard</a></h1>
-        <div id="messages" class="scrollable styleDiv">${attemptedMesseges}</div>
+        <div id="messages" class="scrollable styleDiv blackGlow">${attemptedMesseges}</div>
         <br>
         <form id="messageForm" method="POST" action="/messages/${chatname}">
           <input type="text" width=100% id="messageInput" autocomplete="off" readonly 
