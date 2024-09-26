@@ -2,8 +2,7 @@
     height: 60%; /* Fixed height */
     overflow: auto; /* Enable vertical scrolling */
     padding: 10px; /* Optional: Add padding */
-    border-radius: 10px;
-    background-color: rgb(6, 98, 184);
+    background-color: hsla(0,0%,0%, 0);;
     text-overflow: ellipsis;
 }
 
@@ -14,9 +13,8 @@
 .styleDiv {
     padding: 15px;
     margin: 5px;
-    border: 1px solid white !important;
-    border-radius: 25px !important;
-    background-color: rgb(6, 98, 184);
+    border: 3px solid white !important;
+    background-color: hsla(0,0%,0%, 0);
 }
 
 .dragging {
@@ -25,6 +23,8 @@
 
 #chatList {
     max-width: 25% !important;
+    max-height: 50%;
+    overflow-y: scroll;
 }
 
 .chatLink {
@@ -33,10 +33,9 @@
 
 #styleDiv {
     padding: 10px; 
-    border-radius: 10px;
-    background-color: rgb(36, 128, 204) !important;
+    background-color: hsla(0,0%,0%, 0); !important;
     margin: 5px;
-    border: 1px solid white !important;;
+    border: 3px solid white !important;;
 }
 
 #messageForm {
@@ -54,6 +53,20 @@
     margin-right: 25%;
 }
 
+.blackGlow {
+    box-shadow: 0 0 100px black;
+}
+
+.blackGlowInner {
+    box-shadow: 0 0 100px black;
+}
+
+img:not(.trashcan, .settingsGear) {
+    box-shadow: 0 0 100px black;
+    background: black;
+    box-shadow: 0 0 100px black inset;
+}
+
 .qtrCentered {
     width: 25%;
     margin-left: 37.5%;
@@ -69,9 +82,8 @@
 .lightStyleDiv {
     padding: 10px;
     margin: 5px;
-    border: 1px solid white !important;
-    border-radius: 25px !important;
-    background-color: rgb(90, 136, 189) !important;
+    border: 3px solid white !important;
+    background-color: hsla(0,0%,0%, 0); !important;
 }
 
 .quarterWidth {
@@ -110,9 +122,9 @@
 
 html {
     padding: 5px;
-    background-color: rgb(2, 49, 94);
-    font-family: system-ui, c-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    margin: 5px;
+    background-image: linear-gradient(#1c0166, #100038);
+    font-family: system-ui, c-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;  
+    min-height: 100%;
 }
 
 .inline {
@@ -143,23 +155,25 @@ div {
 }
 
 input {
-    border: 1px solid white;
-    background-color: rgb(6, 98, 184);
-    color: white;
     border-radius: 10px;
+    background-color: hsla(0,0%,0%, 0);;
+    color: white;
 }
 
 button[type="submit"] {
     border: 1px solid white;
-    background-color: rgb(6, 98, 184);
+    background-color: hsla(0,0%,0%, 0);;
     color: white;
-    border-radius: 7px;
 }
 
-input[type=text], input[type=password], input[type=date] {
-    border-radius: 7px !important; 
+input[type=submit], input[type=text], input[type=password], input[type=button] {
+    border-radius: 3px;
+    border: 1px solid white !important;
 } 
 
+input[type=color] {
+    border: 0px transparent;
+}
 
 
 ::placeholder {
@@ -189,13 +203,14 @@ ul li {
   
   
 ul li::marker {
-    content: '• '; /* Custom bullet symbol */
+    content: ''; /* Custom bullet symbol */
     color: white !important; /* Bullet color */
     position: absolute;
     left: -20px; /* Adjust based on padding */
 }
 #dashHeader {
     flex-direction: row;
+    height: 80% !important;
 }
 
 .trashcan {
@@ -208,12 +223,18 @@ ul li::marker {
 .preview-container {
     padding: 15px;
     margin: 5px;
-    border: 1px solid white !important;
-    border-radius: 25px !important;
-    background-color: rgb(6, 98, 184); 
+    border: 3px solid white !important;
+    background-color: hsla(0,0%,0%, 0);; 
     max-width: 25%;
+    border-radius: 5px;
 }
 
 .preview-image {
     max-width: 90%;
+}
+
+input[type=text]:select {
+    border: 3px solid white;
+    background-color: hsla(0,0%,0%, 0);;
+    color: white;
 }

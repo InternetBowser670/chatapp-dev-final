@@ -34,18 +34,18 @@ html
       }
 
 
-    div(id="dashHeader" class="styleDiv threeQtrCentered")
+    div(id="dashHeader" style="height = 80% !important; max-height = 80% !important;" class="blackGlow styleDiv threeQtrCentered")
       div(class="inline spaced spacedApartInner")
         h1 Convoes
         a(href="/settings")
-          img(src="/assets/images/settings.png" width=20 size=20)
+          img(src="/assets/images/settings.png" class="settingsGear" width=20 size=20)
 
       hr
       h2 Welcome, #{name} | 
         a(href="/logout") Logout  
-      div(class="halfCentered styleDiv centerContent")
+      div(class="halfCentered styleDiv centerContent blackGlow")
         h2 Chat List
-        div(class="styleDiv inline spacedApart chatLink scrollable" id="chatList")
+        div(class="inline spacedApart chatLink scrollable" id="chatList")
           ul(class="draggable-list")
             each chat in chats
               - var chatName = chat
@@ -70,6 +70,7 @@ html
             br
             input(type="password" autocomplete="off" readonly 
   onfocus="this.removeAttribute('readonly');" name="password" required)
+          br
           div
             button(type="submit") Submit
         p(id="responsedata")
