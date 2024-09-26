@@ -345,6 +345,8 @@ app.get("/chats/:chatname", async (req, res) => {
         <form id="messageForm" method="POST" action="/messages/${chatname}">
           <input type="text" width=100% id="messageInput" autocomplete="off" readonly 
 onfocus="this.removeAttribute('readonly');" name="message" name="message" placeholder="Message">
+          <br>
+          <br>
           <input type="submit" name="submit">
         </form>
         <script>
@@ -394,6 +396,10 @@ if (!ws || ws.readyState !== WebSocket.OPEN) {
     // Ensure scrollToBottom is only called once, after handling the message
     scrollToBottom();
 };
+
+  function formatWSMessage(name, message) {
+  
+  }
 
   // Function to handle the parsed message data
   function processMessage(data) {

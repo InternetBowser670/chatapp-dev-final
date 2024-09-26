@@ -2,8 +2,7 @@
     height: 60%; /* Fixed height */
     overflow: auto; /* Enable vertical scrolling */
     padding: 10px; /* Optional: Add padding */
-    border-radius: 10px;
-    background-color: rgb(6, 98, 184);
+    background-color: black;
     text-overflow: ellipsis;
 }
 
@@ -14,9 +13,8 @@
 .styleDiv {
     padding: 15px;
     margin: 5px;
-    border: 1px solid white !important;
-    border-radius: 25px !important;
-    background-color: rgb(6, 98, 184);
+    border: 3px solid white !important;
+    background-color: black;
 }
 
 .dragging {
@@ -33,10 +31,9 @@
 
 #styleDiv {
     padding: 10px; 
-    border-radius: 10px;
-    background-color: rgb(36, 128, 204) !important;
+    background-color: black !important;
     margin: 5px;
-    border: 1px solid white !important;;
+    border: 3px solid white !important;;
 }
 
 #messageForm {
@@ -69,9 +66,8 @@
 .lightStyleDiv {
     padding: 10px;
     margin: 5px;
-    border: 1px solid white !important;
-    border-radius: 25px !important;
-    background-color: rgb(90, 136, 189) !important;
+    border: 3px solid white !important;
+    background-color: black !important;
 }
 
 .quarterWidth {
@@ -110,7 +106,7 @@
 
 html {
     padding: 5px;
-    background-color: rgb(2, 49, 94);
+    background-color: black;
     font-family: system-ui, c-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 5px;
 }
@@ -143,21 +139,19 @@ div {
 }
 
 input {
-    border: 1px solid white;
-    background-color: rgb(6, 98, 184);
+    border: 3px solid white;
+    background-color: black;
     color: white;
-    border-radius: 10px;
 }
 
 button[type="submit"] {
-    border: 1px solid white;
-    background-color: rgb(6, 98, 184);
+    border: 3px solid white;
+    background-color: black;
     color: white;
-    border-radius: 7px;
 }
 
 input[type=text], input[type=password], input[type=date] {
-    border-radius: 7px !important; 
+
 } 
 
 
@@ -208,12 +202,17 @@ ul li::marker {
 .preview-container {
     padding: 15px;
     margin: 5px;
-    border: 1px solid white !important;
-    border-radius: 25px !important;
-    background-color: rgb(6, 98, 184); 
+    border: 3px solid white !important;
+    background-color: black; 
     max-width: 25%;
 }
 
 .preview-image {
     max-width: 90%;
+}
+
+input[type=text]:select {
+    border: 3px solid white;
+    background-color: black;
+    color: white;
 }

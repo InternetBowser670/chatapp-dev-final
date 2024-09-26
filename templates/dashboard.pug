@@ -45,7 +45,7 @@ html
         a(href="/logout") Logout  
       div(class="halfCentered styleDiv centerContent")
         h2 Chat List
-        div(class="styleDiv inline spacedApart chatLink scrollable" id="chatList")
+        div(class="inline spacedApart chatLink scrollable" id="chatList")
           ul(class="draggable-list")
             each chat in chats
               - var chatName = chat
@@ -70,6 +70,7 @@ html
             br
             input(type="password" autocomplete="off" readonly 
   onfocus="this.removeAttribute('readonly');" name="password" required)
+          br
           div
             button(type="submit") Submit
         p(id="responsedata")
