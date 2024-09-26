@@ -2,7 +2,7 @@
     height: 60%; /* Fixed height */
     overflow: auto; /* Enable vertical scrolling */
     padding: 10px; /* Optional: Add padding */
-    background-color: black;
+    background-color: hsla(0,0%,0%, 0);;
     text-overflow: ellipsis;
 }
 
@@ -14,7 +14,7 @@
     padding: 15px;
     margin: 5px;
     border: 3px solid white !important;
-    background-color: black;
+    background-color: hsla(0,0%,0%, 0);
 }
 
 .dragging {
@@ -23,6 +23,9 @@
 
 #chatList {
     max-width: 25% !important;
+    overflow: scroll;
+    max-height: 50%;
+    overflow-y: scroll;
 }
 
 .chatLink {
@@ -31,7 +34,7 @@
 
 #styleDiv {
     padding: 10px; 
-    background-color: black !important;
+    background-color: hsla(0,0%,0%, 0); !important;
     margin: 5px;
     border: 3px solid white !important;;
 }
@@ -67,7 +70,7 @@
     padding: 10px;
     margin: 5px;
     border: 3px solid white !important;
-    background-color: black !important;
+    background-color: hsla(0,0%,0%, 0); !important;
 }
 
 .quarterWidth {
@@ -106,9 +109,9 @@
 
 html {
     padding: 5px;
-    background-color: black;
-    font-family: system-ui, c-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    margin: 5px;
+    background-image: linear-gradient(navy, black);
+    font-family: system-ui, c-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;  
+    min-height: 100%;
 }
 
 .inline {
@@ -140,13 +143,13 @@ div {
 
 input {
     border: 3px solid white;
-    background-color: black;
+    background-color: hsla(0,0%,0%, 0);;
     color: white;
 }
 
 button[type="submit"] {
     border: 3px solid white;
-    background-color: black;
+    background-color: hsla(0,0%,0%, 0);;
     color: white;
 }
 
@@ -183,13 +186,14 @@ ul li {
   
   
 ul li::marker {
-    content: '• '; /* Custom bullet symbol */
+    content: ''; /* Custom bullet symbol */
     color: white !important; /* Bullet color */
     position: absolute;
     left: -20px; /* Adjust based on padding */
 }
 #dashHeader {
     flex-direction: row;
+    height: 80% !important;
 }
 
 .trashcan {
@@ -203,8 +207,9 @@ ul li::marker {
     padding: 15px;
     margin: 5px;
     border: 3px solid white !important;
-    background-color: black; 
+    background-color: hsla(0,0%,0%, 0);; 
     max-width: 25%;
+    border-radius: 5px;
 }
 
 .preview-image {
@@ -213,6 +218,6 @@ ul li::marker {
 
 input[type=text]:select {
     border: 3px solid white;
-    background-color: black;
+    background-color: hsla(0,0%,0%, 0);;
     color: white;
 }
