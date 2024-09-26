@@ -9,15 +9,43 @@
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 </head>
 <body>
-  <div class="styleDiv centered halfSize">
+  <div class="blackGlow styleDiv centered halfSize">
     <h1>
       Settings | <a href="/dashboard">Dashboard</a>
     </h1>
+    <hr>
+    <h2>
+      Account
+    </h2>
+    <ul>
+      <li>
         <p>
           <a href="/changename">
             Change Username
           </a>
         </p>
+      </li>
+    </ul>
+    <h2>
+      Style
+    </h2>
+    <ul>
+      <li>
+        <form>
+          <h3>
+            Primary Color (click to edit)
+          </h3>
+          <input type="color" style="border=0; !important" value="#ff0000">
+          <h3>
+            Secondary Color
+          </h3>
+          <input type="color" value="#ff0000" style="border=0px; !important">
+          <br>
+          <br>
+          <input type="submit">
+        </form>
+      </li>
+    </ul>
   </div>
 </body>
 </html>
