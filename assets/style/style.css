@@ -166,7 +166,8 @@ button[type="submit"] {
     color: white;
 }
 
-input[type=submit] {
+input[type=submit], input[type=text], input[type=password], input[type=button] {
+    border-radius: 3px;
     border: 1px solid white !important;
 } 
 
