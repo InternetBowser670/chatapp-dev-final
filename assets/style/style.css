@@ -167,6 +167,10 @@ button {
     border-radius: 3px;
 }
 
+.fullHeight {
+    height: 80%;
+}
+
 input[type=submit], input[type=text], input[type=password], input[type=button] {
     border-radius: 3px;
     border: 1px solid white !important;
