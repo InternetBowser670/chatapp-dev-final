@@ -33,7 +33,7 @@
 
 #styleDiv {
     padding: 10px; 
-    background-color: hsla(0,0%,0%, 0); !important;
+    background-color: hsla(0,0%,0%, 0) !important;
     margin: 5px;
     border: 3px solid white !important;;
 }
@@ -83,7 +83,7 @@ img:not(.trashcan, .settingsGear) {
     padding: 10px;
     margin: 5px;
     border: 3px solid white !important;
-    background-color: hsla(0,0%,0%, 0); !important;
+    background-color: hsla(0,0%,0%, 0) !important;
 }
 
 .quarterWidth {
@@ -160,10 +160,11 @@ input {
     color: white;
 }
 
-button[type="submit"] {
+button {
     border: 1px solid white;
     background-color: hsla(0,0%,0%, 0);;
     color: white;
+    border-radius: 3px;
 }
 
 input[type=submit], input[type=text], input[type=password], input[type=button] {

@@ -31,19 +31,67 @@
     </h2>
     <ul>
       <li>
-        <form>
-          <h3>
-            Primary Color (click to edit)
-          </h3>
-          <input type="color" style="border=0; !important" value="#ff0000">
-          <h3>
-            Secondary Color
-          </h3>
-          <input type="color" value="#ff0000" style="border=0px; !important">
+        <form id="colorForm" method="POST" action="/save-colors">
+          <label for="color1">Color 1 (click to select):</label>
+          <br>
+          <input type="color" id="color1" name="color1" class="color-picker" value="#1c0166" title="Select Color 1">
+          <br>
+          <label for="color2">Color 2:</label>
+          <br>
+          <input type="color" id="color2" name="color2" class="color-picker" value="#100038" title="Select Color 2">
+          <br>
+          <button type="button" id="resetColors">Reset to Default (Requires save)</button>
           <br>
           <br>
-          <input type="submit">
+          <input type="submit" value="Save">
+          
         </form>
+        
+        <script>
+          document.getElementById('resetColors').addEventListener('click', async function() {
+    const defaultColor1 = '#1c0166';
+    const defaultColor2 = '#100038';
+
+    // Create a URLSearchParams object with default color values
+    
+        // Update the form fields to show the default colors
+        document.querySelector('input[name="color1"]').value = defaultColor1;
+        document.querySelector('input[name="color2"]').value = defaultColor2;
+      
+  });
+
+          // JavaScript to handle form submission via AJAX
+          const color1Input = document.getElementById('color1');
+  const color2Input = document.getElementById('color2');
+  
+  function updateGradient() {
+    const color1 = color1Input.value;
+    const color2 = color2Input.value;
+    document.documentElement.style.backgroundImage = `linear-gradient(${color1}, ${color2})`;
+  }
+
+  // Update the gradient when the user changes the colors
+  color1Input.addEventListener('input', updateGradient);
+  color2Input.addEventListener('input', updateGradient);
+
+  // Fetch and apply saved colors when the page loads
+  fetch('/get-colors')
+    .then(response => response.json())
+    .then(colors => {
+      color1Input.value = colors.color1;
+      color2Input.value = colors.color2;
+      updateGradient();
+    })
+    .catch(err => console.error('Error fetching colors:', err));
+
+        </script>
+
+        <!-- CSS -->
+        <style>
+          .color-picker {
+            border: 0 !important;
+          }
+        </style>
       </li>
     </ul>
   </div>

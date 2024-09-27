@@ -16,6 +16,34 @@
     </p>
 
     <h1><strong>MAKE SURE TO TRY TO LOG IN BEFORE CLEARING YOUR COOKIES</strong></h1>
+    <script>
+      // Function to fetch and apply colors on page load
+      async function applySavedColors() {
+        try {
+          const response = await fetch('/get-colors', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
     
+          if (response.ok) {
+            const colors = await response.json();
+            const color1 = colors.color1 || '#1c0166';  // Default color1 if not set
+            const color2 = colors.color2 || '#100038';  // Default color2 if not set
+    
+            // Apply the colors as a gradient to the page's background
+            document.documentElement.style.backgroundImage = `linear-gradient(${color1}, ${color2})`;
+          } else {
+            console.error('Failed to fetch colors.');
+          }
+        } catch (error) {
+          console.error('Error fetching colors:', error);
+        }
+      }
+    
+      // Run the function when the page loads
+      window.addEventListener('load', applySavedColors);
+    </script>
   </body>
 </html>

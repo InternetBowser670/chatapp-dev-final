@@ -456,6 +456,33 @@ if (!ws || ws.readyState !== WebSocket.OPEN) {
   ws.onclose = () => {
     console.log('WebSocket connection closed');
   };
+  async function applySavedColors() {
+    try {
+      const response = await fetch('/get-colors', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const colors = await response.json();
+        const color1 = colors.color1 || '#1c0166';  // Default color1 if not set
+        const color2 = colors.color2 || '#100038';  // Default color2 if not set
+
+        // Apply the colors as a gradient to the page's background
+        document.documentElement.style.backgroundImage = \`linear-gradient(\${color1}, \${color2})\`;
+      } else {
+        console.error('Failed to fetch colors.');
+      }
+    } catch (error) {
+      console.error('Error fetching colors:', error);
+    }
+  }
+
+  // Run the function when the page loads
+  window.addEventListener('load', applySavedColors);
+
 </script>
       </body>
       </html>
@@ -662,6 +689,46 @@ app.post("/deletechat/:chatname", (req, res) => {
 
 app.get("/scripts/scroll", (req, res) => {
   res.sendFile(scroll);
+});
+
+// Handle POST request to save colors
+app.post('/save-colors', (req, res) => {
+  auth(req, res, async (authData) => {
+    const { color1, color2 } = req.body;
+
+    try {
+      // Update the user's document with the new colors
+      const result = await users.updateOne(
+        { username: authData.user },
+        { $set: { colors: { color1, color2 } } }  // Use $set to update or insert the colors field
+      );
+
+      if (result.modifiedCount === 1) {
+        res.redirect("/settings");
+      } else {
+      }
+    } catch (error) {
+      console.error('Error saving colors:', error);
+    }
+  });
+});
+
+// Endpoint to get the saved colors from MongoDB
+app.get('/get-colors', (req, res) => {
+  auth(req, res, async (authData) => {
+    try {
+      const user = await users.findOne({ username: authData.user });
+
+      if (user && user.colors) {
+        res.json(user.colors);
+      } else {
+        // Default colors
+        res.json({ color1: '#1c0166', color2: '#100038' });
+      }
+    } catch (error) {
+      console.error('Error fetching colors:', error);
+    }
+  });
 });
 
 function generateSessionId(username, originalName) {
