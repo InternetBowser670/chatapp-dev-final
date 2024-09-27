@@ -7,7 +7,7 @@
     "start": "node index.js local",
     "startRepl": "echo Running on local && node index.js replit",
     "clear": "node db.js delete all",
-    "lineCount": "git ls-files --exclude-standard -- ':!:**/*.[pjs][npv]g' ':!:**/*.ai' ':!:.idea' ':!:**/*.eslintrc' ':!:package-lock.json' | xargs wc -l",
+    "lineCount": "node countlines.js",
     "benchmark": "node benchmark.js"
   },
   "keywords": [],
