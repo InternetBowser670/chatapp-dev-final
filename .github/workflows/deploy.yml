@@ -1,27 +1,32 @@
-name: Deploy to Windows Server
+name: Deploy to Google App Engine
 
 on:
   push:
     branches:
-      - master
+      - main  # Deploy only when code is pushed to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install SSH key
-      uses: webfactory/ssh-agent@v0.5.3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        node-version: '18'
 
-    - name: Deploy to Server
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Set Google Cloud Project
       run: |
-        ssh -o StrictHostKeyChecking=no Josh@69.216.116.112 << 'EOF'
-          cd C:\Users\Josh\OneDrive\Desktop\Programming\Web\convo-dev\
-          git pull origin main
-          npm install
-          npm start
-        EOF
+        gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+
+    - name: Deploy to App Engine
+      run: |
+        gcloud app deploy --quiet
