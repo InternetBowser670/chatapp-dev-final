@@ -49,6 +49,7 @@ if (run == "replit") {
 
 //please work!! (i needeed smthg to commit to test google)
 //aight, didnt work. trying again
+//NO IT DIDNT WORK (fixed and trying again)
 
 
 fetchUrlPreview("https://google.com").then((previewHtml) => {
