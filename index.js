@@ -47,6 +47,9 @@ if (run == "replit") {
   throw new "No run enviroment"
 }
 
+//please work!! (i needeed smthg to commit to test google)
+
+
 fetchUrlPreview("https://google.com").then((previewHtml) => {
   console.log("google: ", previewHtml);
 });
