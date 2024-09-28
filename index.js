@@ -37,8 +37,8 @@ if (run == "replit") {
   wsURL = `http://localhost:${wsPort}/`;
   console.log("Web URL is local");
 } else if (run == "gcloud") {
-  webURL = "convoes.uc.r.appspot.com:3000/";
-  wsURL = `convoes.uc.r.appspot.com:${wsPort}/`;
+  webURL = "https://convoes.uc.r.appspot.com:3000/";
+  wsURL = `https://convoes.uc.r.appspot.com:${wsPort}/`;
   console.log("Web URL is google");
 }else {
   console.error(
