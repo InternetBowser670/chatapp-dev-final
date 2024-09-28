@@ -4,12 +4,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
-    "start": "node index.js local",
+    "start": "node index.js gcloud",
     "startRepl": "echo Running on local && node index.js replit",
     "clear": "node db.js delete all",
     "lineCount": "node countlines.js",
     "benchmark": "node benchmark.js",
-    "startGoogle": "node index.js gcloud"
+    "startLocal": "node index.js local"
   },
   "keywords": [],
   "author": "",
