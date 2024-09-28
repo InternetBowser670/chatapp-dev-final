@@ -38,9 +38,10 @@ if (run == "replit") {
   console.log("Web URL is local");
 } else {
   console.log(
-    "Error: RUN environment variable not set to 'replit' or 'local'.",
+    "Error: RUN environment variable not set to 'replit' or 'local', setting to google."
   );
-  throw new "Run not set to 'replit' or 'local'. in the cli args."();
+  webURL = "convoes.uc.r.appspot.com:3000/";
+  wsURL = `convoes.uc.r.appspot.com:${wsPort}/`;
 }
 
 fetchUrlPreview("https://google.com").then((previewHtml) => {
