@@ -3,7 +3,7 @@ name: Deploy to Google App Engine
 on:
   push:
     branches:
-      - main  # Deploy only when code is pushed to the main branch
+      - master  # Deploy only when code is pushed to the master branch
 
 jobs:
   deploy:
