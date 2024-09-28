@@ -36,12 +36,15 @@ if (run == "replit") {
   webURL = "http://localhost:3000/";
   wsURL = `http://localhost:${wsPort}/`;
   console.log("Web URL is local");
-} else {
-  console.log(
-    "Error: RUN environment variable not set to 'replit' or 'local', setting to google."
-  );
+} else if (run == "gcloud") {
   webURL = "convoes.uc.r.appspot.com:3000/";
   wsURL = `convoes.uc.r.appspot.com:${wsPort}/`;
+  console.log("Web URL is google");
+}else {
+  console.error(
+    "Error: RUN environment variable not set to 'replit' or 'local'."
+  );
+  throw new "No run enviroment"
 }
 
 fetchUrlPreview("https://google.com").then((previewHtml) => {

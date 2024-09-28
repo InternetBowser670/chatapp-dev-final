@@ -8,7 +8,8 @@
     "startRepl": "echo Running on local && node index.js replit",
     "clear": "node db.js delete all",
     "lineCount": "node countlines.js",
-    "benchmark": "node benchmark.js"
+    "benchmark": "node benchmark.js",
+    "startGoogle": "node index.js gcloud"
   },
   "keywords": [],
   "author": "",
