@@ -50,6 +50,7 @@ if (run == "replit") {
 //please work!! (i needeed smthg to commit to test google)
 //aight, didnt work. trying again
 //NO IT DIDNT WORK (fixed and trying again)
+//aight, it better work now
 
 
 fetchUrlPreview("https://google.com").then((previewHtml) => {
