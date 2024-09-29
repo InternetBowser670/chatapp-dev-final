@@ -56,6 +56,8 @@ if (run == "replit") {
 //PLS
 //ok, please work
 //BRO
+//pls
+
 
 fetchUrlPreview("https://google.com").then((previewHtml) => {
   console.log("google: ", previewHtml);
