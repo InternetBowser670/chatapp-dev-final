@@ -13,5 +13,5 @@ steps:
     args: ['push', 'gcr.io/convoes/my-app:latest']
 
 images:
-  - 'gcr.io/$PROJECT_ID/my-app:latest'
+  - 'gcr.io/convoes/my-app:latest'
 
