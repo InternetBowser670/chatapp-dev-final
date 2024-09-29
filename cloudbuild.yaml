@@ -1,13 +1,17 @@
+options:
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+
 steps:
-  - name: 'node:18'
+  - name: 'node:20'
     entrypoint: 'npm'
     args: ['install']
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-app:latest', '.']
+    args: ['build', '-t', 'gcr.io/convoes/my-app:latest', '.']
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/my-app:latest']
+    args: ['push', 'gcr.io/convoes/my-app:latest']
 
 images:
   - 'gcr.io/$PROJECT_ID/my-app:latest'
+
