@@ -781,9 +781,14 @@ wss.on("connection", (socket) => {
 });
 
 // Start ws the server on wsport
-server.listen(wsPort, () => {
-  console.log(`WS Server is listening on port ${wsPort}`);
+server.listen(wsPort, (err) => {
+  if (err) {
+    console.error(`Error starting the server: ${err.message}`);
+  } else {
+    console.log(`Server running on port ${wsPort}`);
+  }
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
