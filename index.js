@@ -12,6 +12,7 @@ const fs = require("fs");
 const http = require("http");
 const WebSocket = require("ws");
 const run = process.argv[2];
+const wsPort = process.argv[2] || 80;
 const stylesheet = path.join(__dirname, "/assets/style/style.css");
 const metascraper = require("metascraper")([
   require("metascraper-image")(),
@@ -22,7 +23,6 @@ const metascraper = require("metascraper")([
 
 const { fetchUrlPreview } = require("@internetbowser/linkpreview");
 
-const wsPort = 80;
 
 let webURL;
 let wsURL;
