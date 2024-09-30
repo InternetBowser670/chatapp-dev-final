@@ -12,7 +12,7 @@ const fs = require("fs");
 const http = require("http");
 const WebSocket = require("ws");
 const run = process.argv[2];
-const wsPort = process.argv[2] || 80;
+const wsPort = 80;
 const stylesheet = path.join(__dirname, "/assets/style/style.css");
 const metascraper = require("metascraper")([
   require("metascraper-image")(),
@@ -36,7 +36,7 @@ if (run == "replit") {
   webURL = "http://localhost:3000/";
   wsURL = `http://localhost:${wsPort}/`;
   console.log("Web URL is local");
-} else if (run == "gcloud") {
+} else if (run == "googleCloud") {
   webURL = "https://convoes.uc.r.appspot.com:3000/";
   wsURL = `https://convoes.uc.r.appspot.com:${wsPort}/`;
   console.log("Web URL is google");
