@@ -22,7 +22,7 @@ const metascraper = require("metascraper")([
 
 const { fetchUrlPreview } = require("@internetbowser/linkpreview");
 
-const wsPort = 8080;
+const wsPort = 80;
 
 let webURL;
 let wsURL;
