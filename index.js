@@ -65,6 +65,10 @@ fetchUrlPreview("https://google.com").then((previewHtml) => {
   console.log("google: ", previewHtml);
 });
 
+fetchUrlPreview("https://youtube.com").then((previewHtml) => {
+  console.log("youtube: ", previewHtml);
+});
+
 const uri =
   "mongodb+srv://Josh:Password@chatapp.hvuyebo.mongodb.net/?retryWrites=true&w=majority&appName=chatapp";
 
