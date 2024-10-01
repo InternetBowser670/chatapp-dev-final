@@ -112,6 +112,8 @@ const homepage = fs.readFileSync("pages/homepage.html", "utf8");
 const settings = fs.readFileSync("pages/settings.html", "utf8");
 const scroll = path.join(__dirname, "/static/scroll.js");
 
+console.log("WS port is: ", wsPort)
+
 // Compile pug template(s)
 const dashboard = pug.compileFile("./templates/dashboard.pug");
 
