@@ -1,0 +1,23 @@
+<!-- chat.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="/styles/main">
+  <title>Convo: {{chatname}}</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <h1>Chat: {{chatname}} | <a href="/dashboard">Dashboard</a></h1>
+  <div id="messages" class="scrollable styleDiv blackGlow">{{attemptedMessages}}</div>
+  <br>
+  <form id="messageForm" method="POST" action="/messages/{{chatname}}">
+    <input type="text" width="70%" id="messageInput" autocomplete="off" readonly 
+           onfocus="this.removeAttribute('readonly');" name="message" placeholder="Message">
+    <input type="submit" name="submit">
+  </form>
+  <script src="/scripts/chat.js"></script>
+</body>
+</html>

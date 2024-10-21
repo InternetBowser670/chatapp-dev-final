@@ -371,10 +371,8 @@ app.get("/chats/:chatname", async (req, res) => {
         <div id="messages" class="scrollable styleDiv blackGlow">${attemptedMesseges}</div>
         <br>
         <form id="messageForm" method="POST" action="/messages/${chatname}">
-          <input type="text" width=100% id="messageInput" autocomplete="off" readonly 
+          <input type="text" width=70% id="messageInput" autocomplete="off" readonly 
 onfocus="this.removeAttribute('readonly');" name="message" name="message" placeholder="Message">
-          <br>
-          <br>
           <input type="submit" name="submit">
         </form>
         <script>
