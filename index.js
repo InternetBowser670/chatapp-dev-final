@@ -81,6 +81,7 @@ const secretKey = crypto.randomBytes(32);
 const icon = path.join(__dirname, "/assets/images/favicon.ico");
 const settingsGear = path.join(__dirname, "/assets/images/settings.png");
 const trashcan = path.join(__dirname, "/assets/images/trashcan.png");
+const chatScriptClient = path.join(__dirname, "/static/chat.js");
 
 console.log("secretkey is: ", secretKey);
 
@@ -119,6 +120,7 @@ const changeBday = fs.readFileSync("pages/changeBday.html", "utf8");
 const homepage = fs.readFileSync("pages/homepage.html", "utf8");
 const settings = fs.readFileSync("pages/settings.html", "utf8");
 const scroll = path.join(__dirname, "/static/scroll.js");
+const chatPage = fs.readFileSync(__dirname, "/pages/chat.html");
 
 console.log("WS port is: ", wsPort)
 
@@ -756,6 +758,10 @@ app.get('/get-colors', (req, res) => {
     }
   });
 });
+
+app.get("/scripts/chat.js", (req, res) => {
+  res.end(chatScriptClient)
+})
 
 function generateSessionId(username, originalName) {
   var uuid = crypto.randomUUID();
