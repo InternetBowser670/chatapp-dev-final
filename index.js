@@ -120,7 +120,7 @@ const changeBday = fs.readFileSync("pages/changeBday.html", "utf8");
 const homepage = fs.readFileSync("pages/homepage.html", "utf8");
 const settings = fs.readFileSync("pages/settings.html", "utf8");
 const scroll = path.join(__dirname, "/static/scroll.js");
-const chatPage = fs.readFileSync(__dirname, "/pages/chat.html");
+//const chatPage = fs.readFileSync(__dirname, "/pages/chat.html");
 
 console.log("WS port is: ", wsPort)
 
