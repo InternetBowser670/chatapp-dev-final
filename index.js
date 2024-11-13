@@ -44,7 +44,7 @@ if (run == "replit") {
   console.error(
     "Error: RUN environment variable not set to 'replit' or 'local'."
   );
-  throw new "No run enviroment"
+  throw new Error("No run enviroment")
 }
 
 
