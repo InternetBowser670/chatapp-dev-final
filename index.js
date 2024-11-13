@@ -117,7 +117,11 @@ const changeBday = fs.readFileSync("pages/changeBday.html", "utf8");
 const homepage = fs.readFileSync("pages/homepage.html", "utf8");
 const settings = fs.readFileSync("pages/settings.html", "utf8");
 const scroll = path.join(__dirname, "/static/scroll.js");
+<<<<<<< HEAD
 //const chatPage = fs.readFileSync(__dirname, "/pages/chat.html", "utf8"); causes a prblm
+=======
+//const chatPage = fs.readFileSync(__dirname, "/pages/chat.html");
+>>>>>>> c84b24208f741bf8dcadb820446c9371b2d6831f
 
 console.log("WS port is: ", wsPort)
 
