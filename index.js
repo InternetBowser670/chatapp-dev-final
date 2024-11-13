@@ -20,9 +20,9 @@ const metascraper = require("metascraper")([
   require("metascraper-description")(),
   require("metascraper-url")(),
 ]);
-
+const jsonData = require('./config.json');
 const { fetchUrlPreview } = require("@internetbowser/linkpreview");
-
+console.log(jsonData);
 
 let webURL;
 let wsURL;
@@ -73,17 +73,14 @@ fetchUrlPreview("https://amazon.com").then((previewHtml) => {
   console.log("amazon: ", previewHtml);
 });
 
-const uri =
-  "mongodb+srv://Josh:Password@chatapp.hvuyebo.mongodb.net/?retryWrites=true&w=majority&appName=chatapp";
+const uri = jsonData.mongokey;
 
-const secretKey = crypto.randomBytes(32);
 
 const icon = path.join(__dirname, "/assets/images/favicon.ico");
 const settingsGear = path.join(__dirname, "/assets/images/settings.png");
 const trashcan = path.join(__dirname, "/assets/images/trashcan.png");
 const chatScriptClient = path.join(__dirname, "/static/chat.js");
 
-console.log("secretkey is: ", secretKey);
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -120,7 +117,7 @@ const changeBday = fs.readFileSync("pages/changeBday.html", "utf8");
 const homepage = fs.readFileSync("pages/homepage.html", "utf8");
 const settings = fs.readFileSync("pages/settings.html", "utf8");
 const scroll = path.join(__dirname, "/static/scroll.js");
-const chatPage = fs.readFileSync(__dirname, "/pages/chat.html");
+//const chatPage = fs.readFileSync(__dirname, "/pages/chat.html", "utf8"); causes a prblm
 
 console.log("WS port is: ", wsPort)
 

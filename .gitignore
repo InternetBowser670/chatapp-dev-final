@@ -87,6 +87,9 @@ web_modules/
 .next
 out
 
+#config VERY IMPORTANT
+config.json
+
 # Nuxt.js build / generate output
 .nuxt
 dist
