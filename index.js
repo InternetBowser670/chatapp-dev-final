@@ -48,19 +48,6 @@ if (run == "replit") {
 }
 
 
-
-//please work!! (i needeed smthg to commit to test google)
-//aight, didnt work. trying again
-//NO IT DIDNT WORK (fixed and trying again)
-//aight, it better work now
-//PLS WORK BRO
-//ok this will be it
-//PLS
-//ok, please work
-//BRO
-//pls
-
-
 fetchUrlPreview("https://google.com").then((previewHtml) => {
   console.log("google: ", previewHtml);
 });
